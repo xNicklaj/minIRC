@@ -68,6 +68,7 @@ public class MainController {
 	void addConnection(ActionEvent event) {
 		if(!connectionNameField.getText().trim().isEmpty() && !usernameField.getText().trim().isEmpty() && !IPField.getText().trim().isEmpty() && !portField.getText().trim().isEmpty())
 		{
+			SocketInfo.setConnectionName(connectionNameField.getText());
 			SocketInfo.setUsername(usernameField.getText());
 			SocketInfo.setIp(IPField.getText());
 			SocketInfo.setPort(Integer.parseInt(portField.getText()));
@@ -79,6 +80,7 @@ public class MainController {
 			inboundThread = new Thread(inbound);
 			outboundThread.start();
 			inboundThread.start();
+			thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
 			connectionAddingException = false;
 		}
 		else
