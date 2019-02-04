@@ -1,7 +1,5 @@
 package application.controller;
 
-import java.awt.Event;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
@@ -50,8 +48,10 @@ public class MainController {
 
 	private static outboundListener outbound = new outboundListener(); 
 
+	@SuppressWarnings("unused")
 	private static inboundListener inbound = new inboundListener();
 
+	@SuppressWarnings("unused")
 	private static SceneSwitcher switcher;
 
 	public static void setSwitcher(SceneSwitcher switcher)
