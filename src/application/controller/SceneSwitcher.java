@@ -23,7 +23,7 @@ public class SceneSwitcher {
 		//primaryStage.initStyle(StageStyle.UNDECORATED);
 		//primaryStage.setFullScreen(true);
 		primaryStage.setResizable(false);
-		primaryStage.setTitle("mIRC - Material IRC");
+		primaryStage.setTitle("minIRC - Minimal IRC");
 	}
 	
 	public SceneSwitcher() {
