@@ -26,10 +26,10 @@
             <DropShadow blurType="GAUSSIAN" color="#000000ad" offsetX="-6.0" offsetY="6.0" />
          </effect>
          <children>
-            <JFXTextField fx:id="connectionNameField" layoutX="14.0" layoutY="16.0" prefHeight="25.0" prefWidth="137.0" promptText="Nome connessione" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
-            <JFXTextField fx:id="usernameField" layoutX="165.0" layoutY="16.0" prefHeight="25.0" prefWidth="118.0" promptText="Nome utente" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
-            <JFXTextField fx:id="IPField" layoutX="296.0" layoutY="16.0" prefHeight="25.0" prefWidth="125.0" promptText="Indirizzo IP" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
-            <JFXTextField fx:id="portField" layoutX="438.0" layoutY="16.0" prefHeight="25.0" prefWidth="103.0" promptText="Porta" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
+            <JFXTextField fx:id="connectionNameField" layoutX="14.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="137.0" promptText="Nome connessione" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
+            <JFXTextField fx:id="usernameField" layoutX="165.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="118.0" promptText="Nome utente" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
+            <JFXTextField fx:id="IPField" layoutX="296.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="125.0" promptText="Indirizzo IP" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
+            <JFXTextField fx:id="portField" layoutX="438.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="103.0" promptText="Porta" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
             <JFXButton id="AddButton" fx:id="addConnectionButton" buttonType="RAISED" layoutX="563.0" layoutY="-2.0" onAction="#addConnection" prefHeight="49.0" prefWidth="155.0" text="Aggiungi" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" />
          </children>
       </AnchorPane>

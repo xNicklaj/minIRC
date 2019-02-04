@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 import application.network.outboundListener;
+import application.network.SocketInfo;
 import application.network.inboundListener;
 
 import javafx.event.ActionEvent;
@@ -48,11 +49,15 @@ public class MainController {
 
 	private static outboundListener outbound = new outboundListener(); 
 
-	@SuppressWarnings("unused")
 	private static inboundListener inbound = new inboundListener();
 
-	@SuppressWarnings("unused")
 	private static SceneSwitcher switcher;
+	
+	private static Thread outboundThread;
+	
+	private static Thread inboundThread;
+	
+	private static boolean connectionAddingException = false;
 
 	public static void setSwitcher(SceneSwitcher switcher)
 	{
@@ -61,12 +66,58 @@ public class MainController {
 
 	@FXML
 	void addConnection(ActionEvent event) {
-		connectionNameField.clear();
-		usernameField.clear();
-		IPField.clear();
-		portField.clear();
+		if(!connectionNameField.getText().trim().isEmpty() && !usernameField.getText().trim().isEmpty() && !IPField.getText().trim().isEmpty() && !portField.getText().trim().isEmpty())
+		{
+			SocketInfo.setUsername(usernameField.getText());
+			SocketInfo.setIp(IPField.getText());
+			SocketInfo.setPort(Integer.parseInt(portField.getText()));
+			connectionNameField.clear();
+			usernameField.clear();
+			IPField.clear();
+			portField.clear();
+			outboundThread = new Thread(outbound);
+			inboundThread = new Thread(inbound);
+			outboundThread.start();
+			inboundThread.start();
+			connectionAddingException = false;
+		}
+		else
+		{
+			connectionAddingException = true;
+			if(connectionNameField.getText().trim().isEmpty())
+				connectionNameField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+			if(usernameField.getText().trim().isEmpty())
+				usernameField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+			if(IPField.getText().trim().isEmpty())
+				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+			if(portField.getText().trim().isEmpty())
+				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+		}
 		
 	}
+	
+    @FXML
+    void checkIfEmpty(KeyEvent event) {
+    	if(connectionAddingException)
+    	{
+    		if(event.getSource() == connectionNameField) {
+    			if(!connectionNameField.getText().trim().isEmpty())
+    				connectionNameField.setStyle("-jfx-unfocus-color: #000000;");
+    		}
+    		else if(event.getSource() == usernameField) {
+    			if(!usernameField.getText().trim().isEmpty())
+    				usernameField.setStyle("-jfx-unfocus-color: #000000;");
+    		}
+    		else if(event.getSource() == IPField) {
+    			if(!IPField.getText().trim().isEmpty())
+    				IPField.setStyle("-jfx-unfocus-color: #000000;");
+    		}
+    		else if(event.getSource() == portField) {
+    			if(!portField.getText().trim().isEmpty())
+    				portField.setStyle("-jfx-unfocus-color: #000000;");
+    		}
+    	}
+    }
 	
 	@FXML
     void sendFromReturn(KeyEvent event) {
