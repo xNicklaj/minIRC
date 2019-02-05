@@ -54,33 +54,52 @@ public class MainController {
 	private static inboundListener inbound = new inboundListener();
 
 	private static SceneSwitcher switcher;
-	
+
 	private static Thread outboundThread;
-	
+
 	private static Thread inboundThread;
-	
+
 	private static boolean connectionAddingException = false;
 
 	public static void setSwitcher(SceneSwitcher switcher)
 	{
 		MainController.switcher = switcher;
 	}
-	
+
+	public boolean validateIPAddress(String ipAddress) { 
+		String[] tokens = ipAddress.split("\\.");
+		if (tokens.length != 4) { 
+			return false;
+		} 
+		for (String str : tokens) {
+			int i = Integer.parseInt(str);
+			if ((i < 0) || (i > 255))
+				return false; 
+		} 
+		return true; 
+	} 
+
 	private void addConnection()
 	{
 		if(!connectionNameField.getText().trim().isEmpty() && !usernameField.getText().trim().isEmpty() && !IPField.getText().trim().isEmpty() && !portField.getText().trim().isEmpty())
 		{
 			SocketInfo.setConnectionName(connectionNameField.getText());
 			SocketInfo.setUsername(usernameField.getText());
+			if(!validateIPAddress(IPField.getText()))
+			{
+				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+				connectionAddingException = true;	
+			}
 			SocketInfo.setIp(IPField.getText());
 			try {
 				SocketInfo.setPort(Integer.parseInt(portField.getText()));
 			}catch(NumberFormatException e)
 			{
 				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-				connectionAddingException = true;	
-				return;
+				connectionAddingException = true;
 			}
+			if(connectionAddingException)
+				return;
 			connectionNameField.clear();
 			usernameField.clear();
 			IPField.clear();
@@ -112,21 +131,21 @@ public class MainController {
 		{
 			SocketInfo.setConnectionName(connectionNameField.getText());
 			SocketInfo.setUsername(usernameField.getText());
-			SocketInfo.setIp(IPField.getText());
-			if(IPAddressUtil.isIPv4LiteralAddress(IPField.getText()))
+			if(!validateIPAddress(IPField.getText()))
 			{
 				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 				connectionAddingException = true;	
-				return;
 			}
+			SocketInfo.setIp(IPField.getText());
 			try {
 				SocketInfo.setPort(Integer.parseInt(portField.getText()));
 			}catch(NumberFormatException e)
 			{
 				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 				connectionAddingException = true;	
-				return;
 			}
+			if(connectionAddingException)
+				return;
 			connectionNameField.clear();
 			usernameField.clear();
 			IPField.clear();
@@ -150,42 +169,42 @@ public class MainController {
 			if(portField.getText().trim().isEmpty())
 				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 		}
-		
+
 	}
-	
-    @FXML
-    void checkIfEmpty(KeyEvent event) {
-    	if(connectionAddingException)
-    	{
-    		if(event.getSource() == connectionNameField) {
-    			if(!connectionNameField.getText().trim().isEmpty())
-    				connectionNameField.setStyle("-jfx-unfocus-color: #000000;");
-    		}
-    		else if(event.getSource() == usernameField) {
-    			if(!usernameField.getText().trim().isEmpty())
-    				usernameField.setStyle("-jfx-unfocus-color: #000000;");
-    		}
-    		else if(event.getSource() == IPField) {
-    			if(!IPField.getText().trim().isEmpty())
-    				IPField.setStyle("-jfx-unfocus-color: #000000;");
-    		}
-    		else if(event.getSource() == portField) {
-    			if(!portField.getText().trim().isEmpty())
-    				portField.setStyle("-jfx-unfocus-color: #000000;");
-    		}
-    	}
-    	if(event.getCode() == KeyCode.ENTER)
-    		addConnection();
-    }
-	
+
 	@FXML
-    void sendFromReturn(KeyEvent event) {
+	void checkIfEmpty(KeyEvent event) {
+		if(connectionAddingException)
+		{
+			if(event.getSource() == connectionNameField) {
+				if(!connectionNameField.getText().trim().isEmpty())
+					connectionNameField.setStyle("-jfx-unfocus-color: #000000;");
+			}
+			else if(event.getSource() == usernameField) {
+				if(!usernameField.getText().trim().isEmpty())
+					usernameField.setStyle("-jfx-unfocus-color: #000000;");
+			}
+			else if(event.getSource() == IPField) {
+				if(!IPField.getText().trim().isEmpty())
+					IPField.setStyle("-jfx-unfocus-color: #000000;");
+			}
+			else if(event.getSource() == portField) {
+				if(!portField.getText().trim().isEmpty())
+					portField.setStyle("-jfx-unfocus-color: #000000;");
+			}
+		}
+		if(event.getCode() == KeyCode.ENTER)
+			addConnection();
+	}
+
+	@FXML
+	void sendFromReturn(KeyEvent event) {
 		if(event.getCode() == KeyCode.ENTER)
 		{
 			outbound.sendMessage(inputField.getText());
 			inputField.clear();
 		}
-    }
+	}
 
 	@FXML
 	void sendMessage(ActionEvent event) {
