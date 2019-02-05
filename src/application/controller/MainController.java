@@ -3,6 +3,8 @@ package application.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
+import sun.net.util.IPAddressUtil;
+
 import application.network.outboundListener;
 import application.network.SocketInfo;
 import application.network.inboundListener;
@@ -63,6 +65,46 @@ public class MainController {
 	{
 		MainController.switcher = switcher;
 	}
+	
+	private void addConnection()
+	{
+		if(!connectionNameField.getText().trim().isEmpty() && !usernameField.getText().trim().isEmpty() && !IPField.getText().trim().isEmpty() && !portField.getText().trim().isEmpty())
+		{
+			SocketInfo.setConnectionName(connectionNameField.getText());
+			SocketInfo.setUsername(usernameField.getText());
+			SocketInfo.setIp(IPField.getText());
+			try {
+				SocketInfo.setPort(Integer.parseInt(portField.getText()));
+			}catch(NumberFormatException e)
+			{
+				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+				connectionAddingException = true;	
+				return;
+			}
+			connectionNameField.clear();
+			usernameField.clear();
+			IPField.clear();
+			portField.clear();
+			outboundThread = new Thread(outbound);
+			inboundThread = new Thread(inbound);
+			outboundThread.start();
+			inboundThread.start();
+			thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
+			connectionAddingException = false;
+		}
+		else
+		{
+			connectionAddingException = true;
+			if(connectionNameField.getText().trim().isEmpty())
+				connectionNameField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+			if(usernameField.getText().trim().isEmpty())
+				usernameField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+			if(IPField.getText().trim().isEmpty())
+				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+			if(portField.getText().trim().isEmpty())
+				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+		}
+	}
 
 	@FXML
 	void addConnection(ActionEvent event) {
@@ -71,7 +113,20 @@ public class MainController {
 			SocketInfo.setConnectionName(connectionNameField.getText());
 			SocketInfo.setUsername(usernameField.getText());
 			SocketInfo.setIp(IPField.getText());
-			SocketInfo.setPort(Integer.parseInt(portField.getText()));
+			if(IPAddressUtil.isIPv4LiteralAddress(IPField.getText()))
+			{
+				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+				connectionAddingException = true;	
+				return;
+			}
+			try {
+				SocketInfo.setPort(Integer.parseInt(portField.getText()));
+			}catch(NumberFormatException e)
+			{
+				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
+				connectionAddingException = true;	
+				return;
+			}
 			connectionNameField.clear();
 			usernameField.clear();
 			IPField.clear();
@@ -119,6 +174,8 @@ public class MainController {
     				portField.setStyle("-jfx-unfocus-color: #000000;");
     		}
     	}
+    	if(event.getCode() == KeyCode.ENTER)
+    		addConnection();
     }
 	
 	@FXML
