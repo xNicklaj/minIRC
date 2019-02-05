@@ -1,4 +1,4 @@
-package application.controller;
+package application;
 
 import java.io.IOException;
 
@@ -33,7 +33,7 @@ public class SceneSwitcher {
 	public int switchToMain()
 	{
 		root = null;
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("../MainScreen.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("MainScreen.fxml"));
 		try {
 			root = loader.load();
 		} catch (IOException e) {
@@ -42,7 +42,7 @@ public class SceneSwitcher {
 		}
 		root.setId("anchor");
 		mainScene = new Scene(root, 1280, 720);
-		mainScene.getStylesheets().add(getClass().getResource("../css/mountain_theme.css").toExternalForm());
+		mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		return 0;

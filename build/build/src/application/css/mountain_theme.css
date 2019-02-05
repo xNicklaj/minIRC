@@ -1,0 +1,37 @@
+#BackgroundImageLayer{
+	-fx-background-image: url(@../../../../../resources/themes/mountain/Background.jpg);
+	-fx-background-size: 100% 100%;
+}
+
+#MainPane{
+	-fx-background-color: rgba(255, 255, 255, .9);
+}
+
+.jfx-button{
+	-fx-background-color: rgba(121, 85, 72, 1);
+	-jfx-button-type: RAISED;
+}
+
+.jfx-text-field{
+	-jfx-focus-color: rgba(121, 85, 72, 1);
+}
+
+.list-view{
+	-fx-background-color: rgba(255, 255, 255, 0);
+}
+
+.scroll-pane > .viewport{
+	-fx-background-color: transparent;
+}
+
+.scroll-pane{
+	-fx-background-color: transparent;
+}
+
+
+#AddButton{
+	-fx-background-radius: 30;
+	-fx-background-color: rgba(255, 255, 255, 1);
+	-fx-text-fill: rgba(121, 85, 72, 1);
+	-fx-border-radius: 50, 50, 50, 50;
+}
