@@ -20,24 +20,24 @@
 		<mkdir dir="externalLibs" />
 	
 		<copy todir="externalLibs">
-			<fileset dir="D:\users\simon\GitHub\minIRC\lib">
+			<fileset dir="C:\Users\simone.aronica\git\minIRC\lib">
+				<filename name="fontawesomefx-8.9.jar"/>
+			</fileset>
+		</copy>
+		<copy todir="externalLibs">
+			<fileset dir="C:\Users\simone.aronica\git\minIRC\lib">
 				<filename name="jfoenix-8.0.8.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="externalLibs">
-			<fileset dir="D:\users\simon\GitHub\minIRC\lib">
+			<fileset dir="C:\Users\simone.aronica\git\minIRC\lib">
 				<filename name="ini4j-0.5.4.jar"/>
-			</fileset>
-		</copy>
-		<copy todir="externalLibs">
-			<fileset dir="D:\users\simon\GitHub\minIRC\lib">
-				<filename name="fontawesomefx-8.9.jar"/>
 			</fileset>
 		</copy>
 	
 		<mkdir dir="project" />
 		<copy todir="project">
-			<fileset dir="D:\users\simon\GitHub\minIRC">
+			<fileset dir="C:\Users\simone.aronica\git\minIRC">
 				<include name="src/**" />
 			</fileset>
 		</copy>

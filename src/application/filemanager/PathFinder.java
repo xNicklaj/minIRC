@@ -7,14 +7,19 @@ import java.nio.file.Paths;
 public class PathFinder {
 	private static Path projectPath = Paths.get(new File("").getAbsolutePath());
 	
-	public static Path getProjectPath()
+	public static String getProjectPath()
 	{
-		return projectPath;
+		return projectPath + "\\";
 	}
 	
 	public static String getResourcePath(String resource)
 	{
-		return getProjectPath() + "/resources/" + resource;
+		return getProjectPath() + "resources\\" + resource;
+	}
+	
+	public static String getThemePath(String theme)
+	{
+		return getProjectPath() + "themes\\" + theme + "\\";
 	}
 	
 }

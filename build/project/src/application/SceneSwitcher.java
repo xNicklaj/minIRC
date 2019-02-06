@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 
+import application.filemanager.PathFinder;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -33,6 +34,7 @@ public class SceneSwitcher {
 	public int switchToMain()
 	{
 		root = null;
+		System.out.println(PathFinder.getResourcePath(""));
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MainScreen.fxml"));
 		try {
 			root = loader.load();
@@ -52,7 +54,7 @@ public class SceneSwitcher {
 	{
 		newConnectionStage = new Stage();
 		newConnectionParent = null;
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("../AddConnection.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("AddConnection.fxml"));
 		try {
 			newConnectionParent = loader.load();
 		} catch (IOException e) {

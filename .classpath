@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="lib/jfoenix-8.0.8.jar"/>
 	<classpathentry kind="lib" path="lib/fontawesomefx-8.9.jar"/>
 	<classpathentry kind="lib" path="lib/ini4j-0.5.4.jar"/>
+	<classpathentry kind="lib" path="lib/jdom2-2.0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
