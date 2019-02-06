@@ -34,7 +34,6 @@ public class SceneSwitcher {
 	public int switchToMain()
 	{
 		root = null;
-		System.out.println(PathFinder.getResourcePath(""));
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MainScreen.fxml"));
 		try {
 			root = loader.load();
