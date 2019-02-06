@@ -17,7 +17,7 @@ public class Main extends Application implements XMLLoadable{
 	@Override
 	public void start(Stage primaryStage) {
 		settings = new XMLLoader("settings.xml");
-		settings.createXML();
+		settings.createXML(this);
 		SocketInfo.setUsername("Nicklaj");
 		SocketInfo.setNamecolor("#ff0000");
 		SocketInfo.setPort(3316);
@@ -45,7 +45,7 @@ public class Main extends Application implements XMLLoadable{
 		
 		settings.addContent(new Element("theme", "forest"));
 		
-		settings.getDocument().getRootElement().addContent(serverlist);
-		settings.getDocument().getRootElement().addContent(settings);
+		Main.settings.getDocument().getRootElement().addContent(serverlist);
+		Main.settings.getDocument().getRootElement().addContent(settings);
 	}
 }
