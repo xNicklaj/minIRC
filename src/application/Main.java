@@ -3,6 +3,7 @@ package application;
 import application.controller.MainController;
 import application.filemanager.Settings;
 import application.network.SocketInfo;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 

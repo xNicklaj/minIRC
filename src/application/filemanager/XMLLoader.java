@@ -7,6 +7,8 @@ import java.io.IOException;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
@@ -52,20 +54,27 @@ public class XMLLoader{
 		return this.document;
 	}
 	
-	public void addNode(String[] parentNodes, String childNode, String value)
+	public void addNode(String[] parentNodes, String[] childNodes, String content[])
 	{
-		Element childElement = new Element(childNode);
-		childElement.setText(value);
+		Element[] contents = new Element[content.length];
+		int i;
+		for(i = 0; i < contents.length; i++)
+		{
+			contents[i] = new Element(childNodes[i]);
+			contents[i].setText(content[i]);
+		}
 		
-		Element parent = document.getRootElement();
+		Element parent = document.getRootElement().clone();
 		
-		int i = 0;
+		i = 0;
 		if(parentNodes[0].equals(this.document.getRootElement().getName()))
 			i++;
 		for( ; i < parentNodes.length; i++)
-			parent = parent.getChild(parentNodes[i]);
+			parent = parent.getChild(parentNodes[i]).clone();
 		
-		parent.addContent(childElement);
+		for(i = 0; i < contents.length; i++)
+			parent.addContent(contents[i]);
+			
 		this.updateXML();
 	}
 	
@@ -79,7 +88,13 @@ public class XMLLoader{
 	
 	public XMLLoader(String filename)
 	{
-		this.document = new Document();
+		SAXBuilder builder = new SAXBuilder();
+		try {
+			this.document = (Document) builder.build(new File(PathFinder.getProjectPath() + "settings.xml"));
+		} catch (JDOMException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.filename = filename;
 	}
 }

@@ -7,6 +7,8 @@ import java.io.IOException;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
@@ -27,6 +29,11 @@ public class XMLLoader{
 		if(new File(PathFinder.getProjectPath() + filename).exists())
 			return;
 		
+		this.updateXML();
+	}
+	
+	private void updateXML()
+	{
 		XMLOutputter outputFile = new XMLOutputter();
 		outputFile.setFormat(Format.getPrettyFormat());
 		try {
@@ -47,36 +54,47 @@ public class XMLLoader{
 		return this.document;
 	}
 	
-	public XMLLoader(String filename)
+	public void addNode(String[] parentNodes, String[] childNodes, String content[])
 	{
-		this.document = new Document();
-		this.filename = filename;
+		Element[] contents = new Element[content.length];
+		int i;
+		for(i = 0; i < contents.length; i++)
+		{
+			contents[i] = new Element(childNodes[i]);
+			contents[i].setText(content[i]);
+		}
+		
+		Element parent = document.getRootElement().clone();
+		
+		i = 0;
+		if(parentNodes[0].equals(this.document.getRootElement().getName()))
+			i++;
+		for( ; i < parentNodes.length; i++)
+			parent = parent.getChild(parentNodes[i]).clone();
+		
+		for(i = 0; i < contents.length; i++)
+			parent.addContent(contents[i]);
+			
+		this.updateXML();
 	}
 	
-	
-	public void createSettings()
+	private boolean isStringChild(Element child, String childName)
 	{
-		if(new File(PathFinder.getProjectPath() + "settings.xml").exists())
-			return;
+		if(child.getName().equals(childName))
+			return true;
 		
-		Element content = new Element("content");
-		Document document = new Document(content);
-		
-		Element serverlist = new Element("serverlist");
-		Element settings = new Element("settings");
-		
-		settings.addContent(new Element("theme", "forest"));
-		
-		document.getRootElement().addContent(serverlist);
-		document.getRootElement().addContent(settings);
-		
-		XMLOutputter outputFile = new XMLOutputter();
-		outputFile.setFormat(Format.getPrettyFormat());
+		return false;
+	}
+	
+	public XMLLoader(String filename)
+	{
+		SAXBuilder builder = new SAXBuilder();
 		try {
-			outputFile.output(document, new FileWriter(PathFinder.getProjectPath() + "settings.xml"));
-		} catch (IOException e) {
+			this.document = (Document) builder.build(new File(PathFinder.getProjectPath() + "settings.xml"));
+		} catch (JDOMException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		this.filename = filename;
 	}
 }

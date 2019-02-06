@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 
 import application.network.outboundListener;
 import application.SceneSwitcher;
+import application.filemanager.Settings;
 import application.network.SocketInfo;
 import application.network.inboundListener;
 
@@ -99,10 +100,16 @@ public class MainController {
 			}
 			if(connectionAddingException)
 				return;
+			
+			Settings settings = new Settings();
+			settings.addServer(connectionNameField.getText(), usernameField.getText(), IPField.getText(), portField.getText());
+			
 			connectionNameField.clear();
 			usernameField.clear();
 			IPField.clear();
 			portField.clear();
+			
+			System.out.println("sono qua");
 			outboundThread = new Thread(outbound);
 			inboundThread = new Thread(inbound);
 			outboundThread.start();
@@ -141,14 +148,19 @@ public class MainController {
 			}catch(NumberFormatException e)
 			{
 				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-				connectionAddingException = true;	
+				connectionAddingException = true;
 			}
 			if(connectionAddingException)
 				return;
+			
+			Settings settings = new Settings();
+			settings.addServer(connectionNameField.getText(), usernameField.getText(), IPField.getText(), portField.getText());
+			
 			connectionNameField.clear();
 			usernameField.clear();
 			IPField.clear();
 			portField.clear();
+			
 			outboundThread = new Thread(outbound);
 			inboundThread = new Thread(inbound);
 			outboundThread.start();
