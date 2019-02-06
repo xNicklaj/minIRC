@@ -27,6 +27,11 @@ public class XMLLoader{
 		if(new File(PathFinder.getProjectPath() + filename).exists())
 			return;
 		
+		this.updateXML();
+	}
+	
+	private void updateXML()
+	{
 		XMLOutputter outputFile = new XMLOutputter();
 		outputFile.setFormat(Format.getPrettyFormat());
 		try {
@@ -47,36 +52,34 @@ public class XMLLoader{
 		return this.document;
 	}
 	
+	public void addNode(String[] parentNodes, String childNode, String value)
+	{
+		Element childElement = new Element(childNode);
+		childElement.setText(value);
+		
+		Element parent = document.getRootElement();
+		
+		int i = 0;
+		if(parentNodes[0].equals(this.document.getRootElement().getName()))
+			i++;
+		for( ; i < parentNodes.length; i++)
+			parent = parent.getChild(parentNodes[i]);
+		
+		parent.addContent(childElement);
+		this.updateXML();
+	}
+	
+	private boolean isStringChild(Element child, String childName)
+	{
+		if(child.getName().equals(childName))
+			return true;
+		
+		return false;
+	}
+	
 	public XMLLoader(String filename)
 	{
 		this.document = new Document();
 		this.filename = filename;
-	}
-	
-	
-	public void createSettings()
-	{
-		if(new File(PathFinder.getProjectPath() + "settings.xml").exists())
-			return;
-		
-		Element content = new Element("content");
-		Document document = new Document(content);
-		
-		Element serverlist = new Element("serverlist");
-		Element settings = new Element("settings");
-		
-		settings.addContent(new Element("theme", "forest"));
-		
-		document.getRootElement().addContent(serverlist);
-		document.getRootElement().addContent(settings);
-		
-		XMLOutputter outputFile = new XMLOutputter();
-		outputFile.setFormat(Format.getPrettyFormat());
-		try {
-			outputFile.output(document, new FileWriter(PathFinder.getProjectPath() + "settings.xml"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }

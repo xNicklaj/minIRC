@@ -1,23 +1,18 @@
 package application;
 	
-import org.jdom2.Document;
-import org.jdom2.Element;
-
 import application.controller.MainController;
-import application.filemanager.XMLLoadable;
-import application.filemanager.XMLLoader;
+import application.filemanager.Settings;
 import application.network.SocketInfo;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 
-public class Main extends Application implements XMLLoadable{
-	private static XMLLoader settings;
+public class Main extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) {
-		settings = new XMLLoader("settings.xml");
-		settings.createXML(this);
+		Settings settings = new Settings();
+		settings.createSettings();
 		SocketInfo.setUsername("Nicklaj");
 		SocketInfo.setNamecolor("#ff0000");
 		SocketInfo.setPort(3316);
@@ -33,19 +28,5 @@ public class Main extends Application implements XMLLoadable{
 	
 	public static void main(String[] args) {
 		launch(args);
-	}
-	
-	public void XMLStructure()
-	{
-		Element content = new Element("content");
-		settings.getDocument().setRootElement(content);
-		
-		Element serverlist = new Element("serverlist");
-		Element settings = new Element("settings");
-		
-		settings.addContent(new Element("theme", "forest"));
-		
-		Main.settings.getDocument().getRootElement().addContent(serverlist);
-		Main.settings.getDocument().getRootElement().addContent(settings);
 	}
 }
