@@ -10,12 +10,20 @@ import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import application.Main;
+
 public class XMLLoader{
 	private Document document;
 	private String filename;
 	
-	public void createXML()
+	public void FXMLStructure()
 	{
+		
+	}
+	
+	public void createXML(XMLLoadable object)
+	{
+		object.XMLStructure();
 		if(new File(PathFinder.getProjectPath() + filename).exists())
 			return;
 		
@@ -27,6 +35,11 @@ public class XMLLoader{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void setLayout()
+	{
+		FXMLStructure();
 	}
 	
 	public Document getDocument()
