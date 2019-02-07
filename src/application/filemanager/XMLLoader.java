@@ -18,20 +18,6 @@ public class XMLLoader{
 	private Document document;
 	private String filename;
 	
-	public void FXMLStructure()
-	{
-		
-	}
-	
-	public void createXML(XMLLoadable object)
-	{
-		object.XMLStructure();
-		if(new File(PathFinder.getProjectPath() + filename).exists())
-			return;
-		
-		this.updateXML();
-	}
-	
 	private void updateXML()
 	{
 		XMLOutputter outputFile = new XMLOutputter();
@@ -42,6 +28,28 @@ public class XMLLoader{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private boolean isStringChild(Element child, String childName)
+	{
+		if(child.getName().equals(childName))
+			return true;
+		
+		return false;
+	}
+
+	public void FXMLStructure()
+	{
+		
+	}
+	
+	public void createXML(XMLLoadable object)
+	{
+		if(new File(PathFinder.getProjectPath() + filename).exists())
+			return;
+		object.XMLStructure();
+		
+		this.updateXML();
 	}
 	
 	public void setLayout()
@@ -64,26 +72,18 @@ public class XMLLoader{
 			contents[i].setText(content[i]);
 		}
 		
-		Element parent = document.getRootElement().clone();
+		Element parent = document.getRootElement();
 		
 		i = 0;
 		if(parentNodes[0].equals(this.document.getRootElement().getName()))
 			i++;
 		for( ; i < parentNodes.length; i++)
-			parent = parent.getChild(parentNodes[i]).clone();
+			parent = parent.getChild(parentNodes[i]);
 		
 		for(i = 0; i < contents.length; i++)
 			parent.addContent(contents[i]);
 			
 		this.updateXML();
-	}
-	
-	private boolean isStringChild(Element child, String childName)
-	{
-		if(child.getName().equals(childName))
-			return true;
-		
-		return false;
 	}
 	
 	public XMLLoader(String filename)
@@ -92,8 +92,7 @@ public class XMLLoader{
 		try {
 			this.document = (Document) builder.build(new File(PathFinder.getProjectPath() + "settings.xml"));
 		} catch (JDOMException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.document = new Document();
 		}
 		this.filename = filename;
 	}

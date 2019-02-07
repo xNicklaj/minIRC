@@ -109,7 +109,6 @@ public class MainController {
 			IPField.clear();
 			portField.clear();
 			
-			System.out.println("sono qua");
 			outboundThread = new Thread(outbound);
 			inboundThread = new Thread(inbound);
 			outboundThread.start();
