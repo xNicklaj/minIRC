@@ -12,6 +12,12 @@
 	-jfx-button-type: RAISED;
 }
 
+.message-background{
+	-fx-background-color: rgba(121, 85, 72, .75);
+	-fx-background-radius: 5;
+	-fx-border-radius: 5, 5, 5, 5;
+}
+
 .jfx-text-field{
 	-jfx-focus-color: rgba(121, 85, 72, 1);
 }

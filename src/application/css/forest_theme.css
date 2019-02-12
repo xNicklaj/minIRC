@@ -11,6 +11,12 @@
 	-fx-fill: rgba(56, 175, 60, 1);
 }
 
+.message-background{
+	-fx-background-color: rgba(56, 175, 60, .75);
+	-fx-background-radius: 5;
+	-fx-border-radius: 5, 5, 5, 5;
+}
+
 .jfx-button{
 	-fx-background-color: rgba(56, 142, 60, 1);
 	-jfx-button-type: RAISED;
