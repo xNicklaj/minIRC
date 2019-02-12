@@ -2,8 +2,11 @@ package application.network;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import application.controller.MainController;
 
 public class outboundListener extends SocketInfo implements Runnable{
 	private Socket socket;
@@ -32,15 +35,19 @@ public class outboundListener extends SocketInfo implements Runnable{
 
 	private void prepareServer()
 	{
-		try {
-			socket = new Socket(this.getIp(), this.getPort());
-			out = new PrintWriter(socket.getOutputStream());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		synchronized(MainController.connectionMutex)
+		{
+			try {
+				socket = new Socket(this.getIp(), this.getPort());
+				out = new PrintWriter(socket.getOutputStream());
+			} catch (UnknownHostException e) {
+				MainController.resetAll = true;
+			} catch (IOException e) {
+				MainController.resetAll = true;
+			}
+			finally {
+				MainController.connectionMutex.notifyAll();				
+			}
 		}
 	}
 

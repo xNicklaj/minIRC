@@ -2,21 +2,16 @@ package application;
 
 import java.io.IOException;
 
-import application.filemanager.PathFinder;
+import application.controller.MainController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class SceneSwitcher {
 	private Parent root;
-	private Parent newConnectionParent = null;
 	private Stage primaryStage;
-	private Stage newConnectionStage;
 	private Scene mainScene;
-	private Scene newConnectionScene;
 	
 	public SceneSwitcher(Stage primaryStage)
 	{
@@ -42,30 +37,12 @@ public class SceneSwitcher {
 			e.printStackTrace();
 		}
 		root.setId("anchor");
+		MainController controller = (MainController) loader.getController();
+		controller.getInputField().setEditable(false);
 		mainScene = new Scene(root, 1280, 720);
 		mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		return 0;
-	}
-	
-	public void createNewConnectionPanel()
-	{
-		newConnectionStage = new Stage();
-		newConnectionParent = null;
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("AddConnection.fxml"));
-		try {
-			newConnectionParent = loader.load();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		newConnectionParent.setId("anchor");
-		newConnectionScene = new Scene(newConnectionParent, 384, 216);
-		newConnectionStage.setResizable(false);
-		newConnectionStage.setTitle("Aggiungi connessione");
-		newConnectionStage.show();
-		
 	}
 }
