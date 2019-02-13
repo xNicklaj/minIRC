@@ -3,12 +3,12 @@ package application.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
-import application.network.outboundListener;
+import application.network.OutboundListener;
 import application.Message;
 import application.SceneSwitcher;
 import application.filemanager.Settings;
 import application.network.SocketInfo;
-import application.network.inboundListener;
+import application.network.InboundListener;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,9 +62,9 @@ public class MainController {
 	@FXML
     private VBox chatPaneContent;
 	
-	private static outboundListener outbound = new outboundListener(); 
+	private static OutboundListener outbound = new OutboundListener(); 
 
-	private static inboundListener inbound = new inboundListener();
+	private static InboundListener inbound = new InboundListener();
 
 	private static SceneSwitcher switcher;
 
@@ -127,9 +127,10 @@ public class MainController {
 			outboundThread.start();
 			inboundThread.start();
 			
-			
 			try {
-				MainController.connectionMutex.wait();
+				synchronized(connectionMutex) {
+					MainController.connectionMutex.wait();
+				}
 				if(resetAll)
 					return;
 			} catch (InterruptedException e) {
@@ -257,6 +258,14 @@ public class MainController {
 			//chatPane.setContent(message);
 			inputField.clear();
 		}
+	}
+	
+	public void addMessage(String username, String text)
+	{
+		Message message = new Message();
+		message.setUsername(username);
+		message.setMessage(text);
+		chatPaneContent.getChildren().add(message);
 	}
 
 	@FXML

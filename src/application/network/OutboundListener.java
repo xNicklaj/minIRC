@@ -8,7 +8,7 @@ import java.net.UnknownHostException;
 
 import application.controller.MainController;
 
-public class outboundListener extends SocketInfo implements Runnable{
+public class OutboundListener extends SocketInfo implements Runnable{
 	private Socket socket;
 	private PrintWriter out;
 	private String msg;
@@ -17,7 +17,7 @@ public class outboundListener extends SocketInfo implements Runnable{
 	@SuppressWarnings("static-access")
 	public void send() {
 		try {
-			out.print(this.getUsername() + " /" + this.msg + "/");
+			out.print(this.getUsername() + "/" + this.msg + "/");
 			out.flush();
 			out.close();
 			socket.close();
