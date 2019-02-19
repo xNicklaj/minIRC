@@ -42,7 +42,8 @@ public class Settings implements XMLLoadable{
 		parentNodes[1] = "serverlist";
 		
 		Element server = new Element("server");
-		Attribute ID = new Attribute("id", "" + (this.settings.getNodesNumber(parentNodes) + 1));
+		Attribute ID = new Attribute("id", "" + this.settings.getNodesNumber(parentNodes));
+		server.setAttribute(ID);
 		
 		Element serverName = new Element("servername");
 		serverName.setText(servername);
