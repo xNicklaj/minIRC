@@ -3,6 +3,7 @@ package application.filemanager;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.List;
 
 import org.jdom2.Attribute;
 import org.jdom2.Document;
@@ -84,6 +85,44 @@ public class XMLLoader{
 			parent.addContent(contents[i]);
 			
 		this.updateXML();
+	}
+	
+	public void addNode(String[] parentNodes, Element childNode)
+	{
+		Element parent = document.getRootElement();
+		int i = 0;
+		if(parentNodes[0].equals(this.document.getRootElement().getName()))
+			i++;
+		for( ; i < parentNodes.length; i++)
+			parent = parent.getChild(parentNodes[i]);
+		
+		parent.addContent(childNode);
+			
+		this.updateXML();
+	}
+	
+	public int getNodesNumber(String[] parentNodes)
+	{
+		Element parent = document.getRootElement();
+		int i = 0;
+		if(parentNodes[0].equals(this.document.getRootElement().getName()))
+			i++;
+		for( ; i < parentNodes.length; i++)
+			parent = parent.getChild(parentNodes[i]);
+		
+		return parent.getChildren().size();
+	}
+	
+	public List<Element> getNodesList(String[] parentNodes)
+	{
+		Element parent = document.getRootElement();
+		int i = 0;
+		if(parentNodes[0].equals(this.document.getRootElement().getName()))
+			i++;
+		for( ; i < parentNodes.length; i++)
+			parent = parent.getChild(parentNodes[i]);
+		
+		return parent.getChildren();
 	}
 	
 	public XMLLoader(String filename)

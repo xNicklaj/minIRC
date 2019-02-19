@@ -1,5 +1,7 @@
 package application.filemanager;
 
+import org.jdom2.Attribute;
+import org.jdom2.Content;
 import org.jdom2.Element;
 
 public class Settings implements XMLLoadable{
@@ -39,8 +41,30 @@ public class Settings implements XMLLoadable{
 		parentNodes[0] = "content";
 		parentNodes[1] = "serverlist";
 		
+		Element server = new Element("server");
+		Attribute ID = new Attribute("id", "" + (this.settings.getNodesNumber(parentNodes) + 1));
 		
-		this.settings.addNode(parentNodes, childName, content);
+		Element serverName = new Element("servername");
+		serverName.setText(servername);
+		
+		Element userName = new Element("username");
+		userName.setText(username);
+		
+		Element serverip = new Element("serverIP");
+		serverip.setText(serverIP);
+		
+		Element serverPort = new Element("serverport");
+		serverPort.setText(serverport);
+		
+		server.addContent(serverName);
+		server.addContent(userName);
+		server.addContent(serverip);
+		server.addContent(serverPort);
+		
+		
+		//this.settings.addNode(parentNodes, childName, content);
+		this.settings.addNode(parentNodes, server);
+		
 	}
 	
 	public void XMLStructure()
