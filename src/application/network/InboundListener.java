@@ -14,26 +14,36 @@ public class InboundListener extends SocketInfo implements Runnable{
 	private Socket inboundSocket;
 	private String line;
 	public static MainController controller;
-	
+	private static boolean run;
+
 	public void startServer() throws IOException{
-		server = new ServerSocket(this.getPort());
+		if(server != null)
+		{
+			run = false;
+			server.close();
+			inboundSocket.close();
+			server = null;
+			inboundSocket = null;
+			server = new ServerSocket(this.getPort());
+		}
+		else
+		{
+			server = new ServerSocket(this.getPort());
+		}
 		inboundSocket = server.accept();
-		
+
 		Scanner in = new Scanner(inboundSocket.getInputStream());
-		
-		while(true) {
+		run = true;
+		while(run) {
 			try {
 				line = in.nextLine();
 				controller.addMessage(line.substring(0, line.indexOf("/")), line.substring(line.indexOf("/"), line.lastIndexOf("/")));
 			} catch (NoSuchElementException e) {
-				inboundSocket.close();
-				inboundSocket = server.accept();
-				in.close();
-				in = new Scanner(inboundSocket.getInputStream());
+				
 			}
 		}
 	}
-	
+
 	public void run()
 	{
 		try {
