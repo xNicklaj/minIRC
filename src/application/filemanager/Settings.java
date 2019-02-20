@@ -1,7 +1,6 @@
 package application.filemanager;
 
 import org.jdom2.Attribute;
-import org.jdom2.Content;
 import org.jdom2.Element;
 
 public class Settings implements XMLLoadable{

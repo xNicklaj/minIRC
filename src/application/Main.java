@@ -14,23 +14,20 @@ public class Main extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) {
-		Settings settings = new Settings();
 		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 	          public void handle(WindowEvent e) {
 	              System.exit(0);
 	          }
 	    });
+		
+		Settings settings = new Settings();
 		settings.createSettings();
+		
 		SocketInfo.setUsername("Nicklaj");
 		SocketInfo.setNamecolor("#ff0000");
 		SocketInfo.setPort(3316);
 		SocketInfo.setIp("127.0.0.1");
-		Settings test = new Settings();
-		String[] path = new String[3];
-		path[0] = "content";
-		path[1] = "serverlist";
 		
-		//System.out.println(test.getSettings().getNodesList(path).get(0).getText());
 		try {
 			SceneSwitcher switcher = new SceneSwitcher(primaryStage);
 			MainController.setSwitcher(switcher);
