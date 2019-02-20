@@ -5,7 +5,9 @@ import application.filemanager.Settings;
 import application.network.SocketInfo;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 public class Main extends Application{
@@ -13,6 +15,11 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) {
 		Settings settings = new Settings();
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+	          public void handle(WindowEvent e) {
+	              System.exit(0);
+	          }
+	    });
 		settings.createSettings();
 		SocketInfo.setUsername("Nicklaj");
 		SocketInfo.setNamecolor("#ff0000");
