@@ -122,8 +122,11 @@ public class MainController {
 			usernameField.clear();
 			IPField.clear();
 			portField.clear();
+			
 			outboundThread = new Thread(outbound);
 			inboundThread = new Thread(inbound);
+			outboundThread.setName("outboundThread");
+			inboundThread.setName("inboundThread");
 			outboundThread.start();
 			inboundThread.start();
 			

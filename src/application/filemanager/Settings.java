@@ -42,7 +42,7 @@ public class Settings implements XMLLoadable{
 		parentNodes[1] = "serverlist";
 		
 		Element server = new Element("server");
-		Attribute ID = new Attribute("id", "" + this.settings.getNodesNumber(parentNodes));
+		Attribute ID = new Attribute("id", "" + servername.hashCode() + username.hashCode() + serverIP.hashCode() + serverport.hashCode());
 		server.setAttribute(ID);
 		
 		Element serverName = new Element("servername");
@@ -64,7 +64,20 @@ public class Settings implements XMLLoadable{
 		
 		
 		//this.settings.addNode(parentNodes, childName, content);
-		this.settings.addNode(parentNodes, server);
+		if(isIDAvailable("" + servername.hashCode() + username.hashCode() + serverIP.hashCode() + serverport.hashCode()))
+			this.settings.addNode(parentNodes, server);
+		
+	}
+	
+	private boolean isIDAvailable(String ID)
+	{
+		for(int i = 0; i < settings.getNodesNumber(new String[]{"content", "serverlist"}); i++)
+		{
+			if(settings.getNodesList(new String[]{"content", "serverlist"}).get(i).getAttribute("id").getValue().equals(ID))
+				return false;
+		}
+		
+		return true;
 		
 	}
 	
