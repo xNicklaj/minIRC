@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 
 import application.controller.MainController;
+import application.filemanager.Settings;
 import application.network.InboundListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,6 +33,7 @@ public class SceneSwitcher {
 	{
 		root = null;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MainScreen.fxml"));
+		Settings settings = new Settings();
 		try {
 			root = loader.load();
 		} catch (IOException e) {
@@ -43,7 +45,10 @@ public class SceneSwitcher {
 		InboundListener.controller = controller;
 		controller.getInputField().setEditable(false);
 		mainScene = new Scene(root, 1280, 720);
-		mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());
+		if(settings.getThemeName().equals("mountain"))
+			mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());
+		else if(settings.getThemeName().equals("forest"))
+			mainScene.getStylesheets().add(getClass().getResource("css/forest_theme.css").toExternalForm());
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		return 0;

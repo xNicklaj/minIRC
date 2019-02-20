@@ -1,25 +1,20 @@
-#BackgroundImageLayer{
-	-fx-background-image: url(@../../../../../resources/themes/mountain/Background.jpg);
-	-fx-background-size: 100% 100%;
+@font-face {
+    font-family: Roboto-Medium;
+    src: url(@../../../../../resources/themes/forest/Roboto-Medium.ttf);
 }
 
-#MainPane{
-	-fx-background-color: rgba(255, 255, 255, .9);
+.text{
+	-fx-font-family: 'Roboto-Medium';
 }
 
-.jfx-button{
-	-fx-background-color: rgba(121, 85, 72, 1);
-	-jfx-button-type: RAISED;
+.icon{
+	-fx-fill: rgba(56, 175, 60, 1);
 }
 
 .message-background{
 	-fx-background-color: rgba(121, 85, 72, .75);
 	-fx-background-radius: 5;
 	-fx-border-radius: 5, 5, 5, 5;
-}
-
-.jfx-text-field{
-	-jfx-focus-color: rgba(121, 85, 72, 1);
 }
 
 .list-view{
@@ -34,6 +29,23 @@
 	-fx-background-color: transparent;
 }
 
+.jfx-button{
+	-fx-background-color: rgba(121, 85, 72, 1);
+	-jfx-button-type: RAISED;
+}
+
+.jfx-text-field{
+	-jfx-focus-color: rgba(121, 85, 72, 1);
+}
+
+#BackgroundImageLayer{
+	-fx-background-image: url(@../../../../../resources/themes/mountain/Background.jpg);
+	-fx-background-size: 100% 100%;
+}
+
+#MainPane{
+	-fx-background-color: rgba(255, 255, 255, .9);
+}
 
 #AddButton{
 	-fx-background-radius: 30;

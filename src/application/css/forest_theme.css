@@ -17,13 +17,8 @@
 	-fx-border-radius: 5, 5, 5, 5;
 }
 
-.jfx-button{
-	-fx-background-color: rgba(56, 142, 60, 1);
-	-jfx-button-type: RAISED;
-}
-
-.jfx-text-field{
-	-jfx-focus-color: rgba(56, 142, 60, 1);
+.server-list-background{
+	-fx-background-color: rgba(0, 0, 0, .3);
 }
 
 .list-view{
@@ -38,25 +33,19 @@
 	-fx-background-color: transparent;
 }
 
-.message-pane{
-	-fx-background-color: rgba(56, 142, 60, 1); 
-	-fx-background-radius: 5;
-	-fx-border-radius: 5, 5, 5, 5;
+.jfx-button{
+	-fx-background-color: rgba(56, 142, 60, 1);
+	-jfx-button-type: RAISED;
+}
+
+.jfx-text-field{
+	-jfx-focus-color: rgba(56, 142, 60, 1);
 }
 
 #BackgroundImageLayer{
 	-fx-background-image: url(@../../../../../resources/themes/forest/Background.jpg);
 	-fx-background-size: 100% 100%;
 }
-
-#NewConnectionBackgroundLayer{
-	-fx-background-color: rgba(96, 125, 139, 1);
-}
-
-#NewConnectionBorder{
-	-fx-background-color: rgba(0, 0, 0, .2);
-}
-
 
 #MainPane{
 	-fx-background-color: rgba(255, 255, 255, .9);

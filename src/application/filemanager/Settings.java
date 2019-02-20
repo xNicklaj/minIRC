@@ -80,6 +80,15 @@ public class Settings implements XMLLoadable{
 		
 	}
 	
+	public String getThemeName()
+	{
+		for(int i = 0; i <  this.settings.getNodesNumber(new String[]{"content", "settings"}); i++)
+			if(this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getName().equals("theme"))
+				return this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getText();
+		
+		return null;
+	}
+	
 	public void XMLStructure()
 	{
 		Element content = new Element("content");
