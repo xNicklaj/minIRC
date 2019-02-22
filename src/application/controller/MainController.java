@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import application.network.OutboundListener;
 import application.Message;
 import application.SceneSwitcher;
+import application.Server;
 import application.filemanager.Settings;
 import application.network.SocketInfo;
 import application.network.InboundListener;
@@ -62,6 +63,16 @@ public class MainController {
 	@FXML
     private VBox chatPaneContent;
 	
+	@FXML
+	private VBox serverList;
+	
+	@FXML
+	private ScrollPane serverScrollpane;
+	
+	public ScrollPane getServerScrollpane() {
+		return serverScrollpane;
+	}
+
 	private static OutboundListener outbound = new OutboundListener(); 
 
 	private static InboundListener inbound = new InboundListener();
@@ -74,12 +85,7 @@ public class MainController {
 
 	private static boolean connectionAddingException = false;
 
-	public static void setSwitcher(SceneSwitcher switcher)
-	{
-		MainController.switcher = switcher;
-	}
-
-	public boolean validateIPAddress(String ipAddress) { 
+	private boolean validateIPAddress(String ipAddress) { 
 		String[] tokens = ipAddress.split("\\.");
 		if (tokens.length != 4) { 
 			return false;
@@ -90,9 +96,9 @@ public class MainController {
 				return false; 
 		} 
 		return true; 
-	} 
+	}
 
-	private void addConnection()
+	private void addInternalConnection()
 	{
 		resetAll = false;
 		if(!connectionNameField.getText().trim().isEmpty() && !usernameField.getText().trim().isEmpty() && !IPField.getText().trim().isEmpty() && !portField.getText().trim().isEmpty())
@@ -125,8 +131,6 @@ public class MainController {
 			
 			outboundThread = new Thread(outbound);
 			inboundThread = new Thread(inbound);
-			outboundThread.setName("outboundThread");
-			inboundThread.setName("inboundThread");
 			outboundThread.start();
 			inboundThread.start();
 			
@@ -139,7 +143,7 @@ public class MainController {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-		
+			
 			thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
 			connectionAddingException = false;
 			inputField.setEditable(true);
@@ -156,72 +160,12 @@ public class MainController {
 			if(portField.getText().trim().isEmpty())
 				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 		}
+		this.evaluateStoredServer();
 	}
-	
 
 	@FXML
 	private void addConnection(ActionEvent event) {
-		resetAll = false;
-		if(!connectionNameField.getText().trim().isEmpty() && !usernameField.getText().trim().isEmpty() && !IPField.getText().trim().isEmpty() && !portField.getText().trim().isEmpty())
-		{
-			SocketInfo.setConnectionName(connectionNameField.getText());
-			SocketInfo.setUsername(usernameField.getText());
-			if(!validateIPAddress(IPField.getText()))
-			{
-				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-				connectionAddingException = true;	
-			}
-			SocketInfo.setIp(IPField.getText());
-			try {
-				SocketInfo.setPort(Integer.parseInt(portField.getText()));
-			}catch(NumberFormatException e)
-			{
-				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-				connectionAddingException = true;
-			}
-			if(connectionAddingException)
-				return;
-			
-			Settings settings = new Settings();
-			settings.addServer(connectionNameField.getText(), usernameField.getText(), IPField.getText(), portField.getText());
-			
-			connectionNameField.clear();
-			usernameField.clear();
-			IPField.clear();
-			portField.clear();
-			
-			outboundThread = new Thread(outbound);
-			inboundThread = new Thread(inbound);
-			outboundThread.start();
-			inboundThread.start();
-			
-			try {
-				synchronized(connectionMutex) {
-					MainController.connectionMutex.wait();
-				}
-				if(resetAll)
-					return;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
-			connectionAddingException = false;
-			inputField.setEditable(true);
-		}
-		else
-		{
-			connectionAddingException = true;
-			if(connectionNameField.getText().trim().isEmpty())
-				connectionNameField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-			if(usernameField.getText().trim().isEmpty())
-				usernameField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-			if(IPField.getText().trim().isEmpty())
-				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-			if(portField.getText().trim().isEmpty())
-				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-		}
-
+		this.addInternalConnection();
 	}
 
 	@FXML
@@ -246,7 +190,7 @@ public class MainController {
 			}
 		}
 		if(event.getCode() == KeyCode.ENTER)
-			addConnection();
+			addInternalConnection();
 	}
 
 	@FXML
@@ -262,14 +206,6 @@ public class MainController {
 			inputField.clear();
 		}
 	}
-	
-	public void addMessage(String username, String text)
-	{
-		Message message = new Message();
-		message.setUsername(username);
-		message.setMessage(text);
-		chatPaneContent.getChildren().add(message);
-	}
 
 	@FXML
 	private void sendMessage(ActionEvent event) {
@@ -283,6 +219,81 @@ public class MainController {
 		chatPaneContent.getChildren().add(message);
 		//chatPane.setContent(message);
 		inputField.clear();
+	}
+
+	public static void setSwitcher(SceneSwitcher switcher)
+	{
+		MainController.switcher = switcher;
+	}
+
+	public void addExternalConnection(String servername, String username, String IP, String port)
+	{
+		SocketInfo.setConnectionName(servername);
+		SocketInfo.setUsername(username);
+		if(!validateIPAddress(IP))
+		{
+			connectionAddingException = true;	
+		}
+		SocketInfo.setIp(IP);
+		try {
+			SocketInfo.setPort(Integer.parseInt(IP));
+		}catch(NumberFormatException e)
+		{
+			connectionAddingException = true;
+		}
+		if(connectionAddingException)
+			return;
+		
+		Settings settings = new Settings();
+		settings.addServer(servername, username, IP, port);
+		
+		outboundThread = new Thread(outbound);
+		inboundThread = new Thread(inbound);
+		outboundThread.setName("outboundThread");
+		inboundThread.setName("inboundThread");
+		outboundThread.start();
+		inboundThread.start();
+		
+		try {
+			synchronized(connectionMutex) {
+				MainController.connectionMutex.wait();
+			}
+			if(resetAll)
+				return;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	
+		thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
+		connectionAddingException = false;
+		inputField.setEditable(true);
+	}
+	
+
+	public void addMessage(String username, String text)
+	{
+		Message message = new Message();
+		message.setUsername(username);
+		message.setMessage(text);
+		chatPaneContent.getChildren().add(message);
+	}
+
+	public void evaluateStoredServer()
+	{
+		Settings settings = new Settings();
+		Server server = null;
+		for(int i = serverList.getChildren().size(); i < settings.getServerList().size(); i++)
+		{
+			if(server != null)
+				server = null;
+			server = new Server();
+			server.setUsername(settings.getServerList().get(i).getChildText("username"));
+			server.setServerName(settings.getServerList().get(i).getChildText("servername"));
+			server.setIP(settings.getServerList().get(i).getChildText("serverIP"));
+			server.setPort(settings.getServerList().get(i).getChildText("serverport"));
+			serverList.getChildren().add(server);
+		}
+		
 	}
 	
 	public JFXTextField getInputField()

@@ -3,11 +3,13 @@ package application;
 import java.io.IOException;
 
 import application.controller.MainController;
+import application.controller.ServerController;
 import application.filemanager.Settings;
 import application.network.InboundListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.stage.Stage;
 
 public class SceneSwitcher {
@@ -43,7 +45,11 @@ public class SceneSwitcher {
 		root.setId("anchor");
 		controller = (MainController) loader.getController();
 		InboundListener.controller = controller;
+		ServerController.controller = controller;
 		controller.getInputField().setEditable(false);
+		controller.getServerScrollpane().setVbarPolicy(ScrollBarPolicy.NEVER);
+		controller.getServerScrollpane().setHbarPolicy(ScrollBarPolicy.NEVER);
+		controller.evaluateStoredServer();
 		mainScene = new Scene(root, 1280, 720);
 		if(settings.getThemeName().equals("mountain"))
 			mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());

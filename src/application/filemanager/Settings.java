@@ -1,5 +1,8 @@
 package application.filemanager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 
@@ -87,6 +90,17 @@ public class Settings implements XMLLoadable{
 				return this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getText();
 		
 		return null;
+	}
+	
+	public List<Element> getServerList()
+	{
+		List<Element> list = new ArrayList<Element>();
+		for(int i = 0; i < settings.getNodesNumber(new String[] {"content", "serverlist"}); i++)
+		{
+			list.add(settings.getNodesList(new String[] {"content", "serverlist"}).get(i));
+		}
+		
+		return list;
 	}
 	
 	public void XMLStructure()
