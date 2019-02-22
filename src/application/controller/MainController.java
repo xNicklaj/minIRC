@@ -282,7 +282,9 @@ public class MainController {
 	{
 		Settings settings = new Settings();
 		Server server = null;
-		for(int i = serverList.getChildren().size(); i < settings.getServerList().size(); i++)
+		while(serverList.getChildren().size() != 0)
+			serverList.getChildren().remove(0);
+		for(int i = 0; i < settings.getServerList().size(); i++)
 		{
 			if(server != null)
 				server = null;

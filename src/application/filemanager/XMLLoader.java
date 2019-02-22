@@ -16,7 +16,7 @@ public class XMLLoader{
 	private Document document;
 	private String filename;
 	
-	private void updateXML()
+	public void updateXML()
 	{
 		XMLOutputter outputFile = new XMLOutputter();
 		outputFile.setFormat(Format.getPrettyFormat());
@@ -120,6 +120,23 @@ public class XMLLoader{
 			parent = parent.getChild(parentNodes[i]);
 		
 		return parent.getChildren();
+	}
+	
+	public Element getNodePointer(String[] parentNodes)
+	{
+		Element parent = document.getRootElement();
+		int i = 0;
+		if(parentNodes[0].equals(this.document.getRootElement().getName()))
+			i++;
+		for( ; i < parentNodes.length; i++)
+			parent = parent.getChild(parentNodes[i]);
+		
+		return parent;
+	}
+	
+	public void removeNode(String[] parentNodes, int nodeNumber)
+	{
+		
 	}
 	
 	public XMLLoader(String filename)

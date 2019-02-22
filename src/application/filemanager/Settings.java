@@ -19,6 +19,13 @@ public class Settings implements XMLLoadable{
 		return this.settings;
 	}
 	
+	public void removeServer(int i)
+	{
+		Element parent = this.getSettings().getNodePointer(new String[] {"content", "serverlist"});
+		parent.removeContent(i + 1);
+		this.getSettings().updateXML();
+	}
+	
 	public void createSettings()
 	{
 		this.settings.createXML(this);

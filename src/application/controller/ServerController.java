@@ -1,5 +1,6 @@
 package application.controller;
 
+import application.filemanager.Settings;
 import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
@@ -31,14 +32,29 @@ public class ServerController {
     public static boolean isConnected = false;
     
     @FXML
-    void connect(MouseEvent event) {
+    public void connect(MouseEvent event) {
     	//controller.addExternalConnection(servername, username, IP, port);
     	isConnected = true;
     }
+    
+    public String getServerHash()
+    {
+    	return "" + servername.getText().hashCode() + username.getText().hashCode() + IP.getText().hashCode() + port.getText().hashCode();
+    }
 
     @FXML
-    void remove(MouseEvent event) {
-
+    public void remove(MouseEvent event) {
+    	Settings settings = new Settings();
+    	for(int i = 0; i <= settings.getServerList().size(); i++)
+    	{
+    		if(settings.getServerList().get(i).getAttributeValue("id").equals(this.getServerHash()))
+    		{
+    			settings.removeServer(i);
+    			controller.evaluateStoredServer();
+    			return;
+    		}
+    	}
+    	
     	isConnected = false;
     }
 
