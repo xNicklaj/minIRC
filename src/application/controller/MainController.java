@@ -79,9 +79,9 @@ public class MainController {
 
 	private static SceneSwitcher switcher;
 
-	private static Thread outboundThread;
+	private static Thread outboundThread = new Thread();
 
-	private static Thread inboundThread;
+	private static Thread inboundThread = new Thread();
 
 	private static boolean connectionAddingException = false;
 
@@ -131,6 +131,8 @@ public class MainController {
 			
 			outboundThread = new Thread(outbound);
 			inboundThread = new Thread(inbound);
+			outboundThread.setName("outbound-thread");
+			inboundThread.setName("inbound-thread");
 			outboundThread.start();
 			inboundThread.start();
 			

@@ -2,21 +2,21 @@ package application;
 
 import java.io.IOException;
 
-import application.filemanager.PathFinder;
+import application.controller.MainController;
+import application.controller.ServerController;
+import application.filemanager.Settings;
+import application.network.InboundListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.paint.Color;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class SceneSwitcher {
 	private Parent root;
-	private Parent newConnectionParent = null;
 	private Stage primaryStage;
-	private Stage newConnectionStage;
 	private Scene mainScene;
-	private Scene newConnectionScene;
+	private MainController controller;
 	
 	public SceneSwitcher(Stage primaryStage)
 	{
@@ -28,13 +28,14 @@ public class SceneSwitcher {
 	}
 	
 	public SceneSwitcher() {
-		
+		super();
 	}
 	
 	public int switchToMain()
 	{
 		root = null;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MainScreen.fxml"));
+		Settings settings = new Settings();
 		try {
 			root = loader.load();
 		} catch (IOException e) {
@@ -42,30 +43,26 @@ public class SceneSwitcher {
 			e.printStackTrace();
 		}
 		root.setId("anchor");
+		controller = (MainController) loader.getController();
+		InboundListener.controller = controller;
+		ServerController.controller = controller;
+		controller.getInputField().setEditable(false);
+		controller.getServerScrollpane().setVbarPolicy(ScrollBarPolicy.NEVER);
+		controller.getServerScrollpane().setHbarPolicy(ScrollBarPolicy.NEVER);
+		controller.evaluateStoredServer();
 		mainScene = new Scene(root, 1280, 720);
-		mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());
+		if(settings.getThemeName().equals("mountain"))
+			mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());
+		else if(settings.getThemeName().equals("forest"))
+			mainScene.getStylesheets().add(getClass().getResource("css/forest_theme.css").toExternalForm());
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		return 0;
 	}
 	
-	public void createNewConnectionPanel()
+	public MainController getController()
 	{
-		newConnectionStage = new Stage();
-		newConnectionParent = null;
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("AddConnection.fxml"));
-		try {
-			newConnectionParent = loader.load();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		newConnectionParent.setId("anchor");
-		newConnectionScene = new Scene(newConnectionParent, 384, 216);
-		newConnectionStage.setResizable(false);
-		newConnectionStage.setTitle("Aggiungi connessione");
-		newConnectionStage.show();
-		
+		return this.controller;
 	}
+	
 }

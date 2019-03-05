@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-public class outboundListener extends SocketInfo implements Runnable{
+import application.controller.MainController;
+
+public class OutboundListener extends SocketInfo implements Runnable{
 	private Socket socket;
 	private PrintWriter out;
 	private String msg;
@@ -14,7 +16,7 @@ public class outboundListener extends SocketInfo implements Runnable{
 	@SuppressWarnings("static-access")
 	public void send() {
 		try {
-			out.print(this.getUsername() + " /" + this.msg + "/");
+			out.print(this.getUsername() + "/" + this.msg + "/");
 			out.flush();
 			out.close();
 			socket.close();
@@ -32,15 +34,19 @@ public class outboundListener extends SocketInfo implements Runnable{
 
 	private void prepareServer()
 	{
-		try {
-			socket = new Socket(this.getIp(), this.getPort());
-			out = new PrintWriter(socket.getOutputStream());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		synchronized(MainController.connectionMutex)
+		{
+			try {
+				socket = new Socket(this.getIp(), this.getPort());
+				out = new PrintWriter(socket.getOutputStream());
+			} catch (UnknownHostException e) {
+				MainController.resetAll = true;
+			} catch (IOException e) {
+				MainController.resetAll = true;
+			}
+			finally {
+				MainController.connectionMutex.notifyAll();				
+			}
 		}
 	}
 

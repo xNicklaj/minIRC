@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<AnchorPane maxWidth="900.0" minHeight="80.0" minWidth="200.0" styleClass="message-background" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MessageController">
+	<children>
+		<TextFlow fx:id="messageField" layoutX="10.0" layoutY="25.0" maxWidth="860.0" minHeight="40.0" minWidth="180.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="30.0" />
+        <Text fx:id="usernameField" layoutX="22.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="username" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+	</children>
+</AnchorPane>

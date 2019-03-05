@@ -34,7 +34,6 @@ public class ServerController {
     @FXML
     public void connect(MouseEvent event) {
     	//controller.addExternalConnection(servername, username, IP, port);
-    	this.connectIcon.setGlyphName("LAN_DISCONNECT");
     	isConnected = true;
     }
     

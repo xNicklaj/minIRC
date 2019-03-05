@@ -1,5 +1,9 @@
 package application.filemanager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 public class Settings implements XMLLoadable{
@@ -13,6 +17,13 @@ public class Settings implements XMLLoadable{
 	public XMLLoader getSettings()
 	{
 		return this.settings;
+	}
+	
+	public void removeServer(int i)
+	{
+		Element parent = this.getSettings().getNodePointer(new String[] {"content", "serverlist"});
+		parent.removeContent(i + 1);
+		this.getSettings().updateXML();
 	}
 	
 	public void createSettings()
@@ -39,8 +50,64 @@ public class Settings implements XMLLoadable{
 		parentNodes[0] = "content";
 		parentNodes[1] = "serverlist";
 		
+		Element server = new Element("server");
+		Attribute ID = new Attribute("id", "" + servername.hashCode() + username.hashCode() + serverIP.hashCode() + serverport.hashCode());
+		server.setAttribute(ID);
 		
-		this.settings.addNode(parentNodes, childName, content);
+		Element serverName = new Element("servername");
+		serverName.setText(servername);
+		
+		Element userName = new Element("username");
+		userName.setText(username);
+		
+		Element serverip = new Element("serverIP");
+		serverip.setText(serverIP);
+		
+		Element serverPort = new Element("serverport");
+		serverPort.setText(serverport);
+		
+		server.addContent(serverName);
+		server.addContent(userName);
+		server.addContent(serverip);
+		server.addContent(serverPort);
+		
+		
+		//this.settings.addNode(parentNodes, childName, content);
+		if(isIDAvailable("" + servername.hashCode() + username.hashCode() + serverIP.hashCode() + serverport.hashCode()))
+			this.settings.addNode(parentNodes, server);
+		
+	}
+	
+	private boolean isIDAvailable(String ID)
+	{
+		for(int i = 0; i < settings.getNodesNumber(new String[]{"content", "serverlist"}); i++)
+		{
+			if(settings.getNodesList(new String[]{"content", "serverlist"}).get(i).getAttribute("id").getValue().equals(ID))
+				return false;
+		}
+		
+		return true;
+		
+	}
+	
+	public String getThemeName()
+	{
+		for(int i = 0; i <  this.settings.getNodesNumber(new String[]{"content", "settings"}); i++)
+			if(this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getName().equals("theme"))
+				return this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getText();
+		
+		return null;
+	}
+	
+	public List<Element> getServerList()
+	{
+		List<Element> list = new ArrayList<Element>();
+		for(int i = 0; i < settings.getNodesNumber(new String[] {"content", "serverlist"}); i++)
+		{
+			list.add(settings.getNodesList(new String[] {"content", "serverlist"}).get(i));
+		}
+		
+		return list;
 	}
 	
 	public void XMLStructure()

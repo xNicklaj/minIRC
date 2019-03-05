@@ -17,7 +17,7 @@
             <ColorAdjust brightness="-0.14" />
          </effect>
       </AnchorPane>
-      <AnchorPane id="MainPane" layoutX="481.0" prefHeight="57.0" prefWidth="724.0" AnchorPane.leftAnchor="481.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="12.0">
+      <AnchorPane id="MainPane" layoutX="481.0" prefHeight="57.0" prefWidth="724.0" styleClass="addconnection-pane" AnchorPane.leftAnchor="481.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="12.0">
          <effect>
             <DropShadow blurType="GAUSSIAN" color="#000000ad" offsetX="-6.0" offsetY="6.0" />
          </effect>
@@ -29,7 +29,7 @@
             <JFXButton id="AddButton" fx:id="addConnectionButton" buttonType="RAISED" layoutX="563.0" layoutY="-2.0" onAction="#addConnection" prefHeight="49.0" prefWidth="155.0" text="Aggiungi" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" />
          </children>
       </AnchorPane>
-      <AnchorPane id="MainPane" prefHeight="57.0" prefWidth="467.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="12.0">
+      <AnchorPane id="MainPane" prefHeight="57.0" prefWidth="467.0" styleClass="connection-pane" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="12.0">
          <effect>
             <DropShadow blurType="GAUSSIAN" color="#000000ad" offsetX="-6.0" offsetY="6.0" />
          </effect>
@@ -46,7 +46,7 @@
             </Text>
          </children>
       </AnchorPane>
-      <AnchorPane id="MainPane" prefHeight="640.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="205.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="78.0">
+      <AnchorPane id="MainPane" prefHeight="640.0" prefWidth="1000.0" styleClass="message-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="205.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="78.0">
          <effect>
             <DropShadow blurType="GAUSSIAN" color="#000000ad" offsetX="-6.0" offsetY="6.0" />
          </effect>
