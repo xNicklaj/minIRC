@@ -11,6 +11,6 @@
       <Text fx:id="username" layoutX="18.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" AnchorPane.leftAnchor="7.0" AnchorPane.topAnchor="22.0" />
       <Text fx:id="IP" layoutX="28.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" AnchorPane.leftAnchor="7.0" AnchorPane.topAnchor="38.0" />
       <Text fx:id="port" layoutX="28.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="" AnchorPane.leftAnchor="7.0" AnchorPane.topAnchor="54.0" />
-      <MaterialDesignIconView fx:id="connectIcon" glyphName="LAN_CONNECT" layoutX="172.0" layoutY="72.0" onMouseClicked="#connect" size="23" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" />
+      <MaterialDesignIconView fx:id="connectIcon" glyphName="LAN_CONNECT" layoutX="172.0" layoutY="72.0" onMouseClicked="#toggleConnection" size="23" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="6.0" />
    </children>
 </AnchorPane>

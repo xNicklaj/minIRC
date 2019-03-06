@@ -12,6 +12,7 @@ public class OutboundListener extends SocketInfo implements Runnable{
 	private PrintWriter out;
 	private String msg;
 	private Object mutex = new Object();
+	public boolean semaphore = true;
 
 	@SuppressWarnings("static-access")
 	public void send() {
@@ -30,6 +31,11 @@ public class OutboundListener extends SocketInfo implements Runnable{
 		{
 			mutex.notifyAll();
 		}
+	}
+	
+
+	public Object getMutex() {
+		return mutex;
 	}
 
 	private void prepareServer()
@@ -55,7 +61,7 @@ public class OutboundListener extends SocketInfo implements Runnable{
 		this.prepareServer();
 		synchronized(mutex)
 		{
-			while(true)
+			while(semaphore)
 				try {
 					mutex.wait();
 					send();

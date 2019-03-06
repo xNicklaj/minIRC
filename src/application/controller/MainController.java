@@ -69,6 +69,8 @@ public class MainController {
 	@FXML
 	private ScrollPane serverScrollpane;
 	
+	private Server currentServer;
+	
 	public ScrollPane getServerScrollpane() {
 		return serverScrollpane;
 	}
@@ -129,6 +131,13 @@ public class MainController {
 			IPField.clear();
 			portField.clear();
 			
+			if(outboundThread != null)
+			{
+				outbound.semaphore = false;
+				synchronized (outbound.getMutex()) {					
+					outbound.getMutex().notify();
+				}
+			}
 			outboundThread = new Thread(outbound);
 			inboundThread = new Thread(inbound);
 			outboundThread.setName("outbound-thread");
@@ -163,6 +172,14 @@ public class MainController {
 				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 		}
 		this.evaluateStoredServer();
+	}
+	
+	public void updateConnectionBar(boolean isConnected)
+	{
+		if(isConnected)
+			thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
+		else
+			this.thisConnection.setText("non connesso");
 	}
 
 	@FXML
@@ -238,7 +255,7 @@ public class MainController {
 		}
 		SocketInfo.setIp(IP);
 		try {
-			SocketInfo.setPort(Integer.parseInt(IP));
+			SocketInfo.setPort(Integer.parseInt(port));
 		}catch(NumberFormatException e)
 		{
 			connectionAddingException = true;
@@ -249,10 +266,17 @@ public class MainController {
 		Settings settings = new Settings();
 		settings.addServer(servername, username, IP, port);
 		
+		if(outboundThread != null)
+		{
+			outbound.semaphore = false;
+			synchronized (outbound.getMutex()) {					
+				outbound.getMutex().notify();
+			}
+		}
 		outboundThread = new Thread(outbound);
 		inboundThread = new Thread(inbound);
-		outboundThread.setName("outboundThread");
-		inboundThread.setName("inboundThread");
+		outboundThread.setName("outbound-thread");
+		inboundThread.setName("inbound-thread");
 		outboundThread.start();
 		inboundThread.start();
 		
@@ -265,7 +289,7 @@ public class MainController {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	
+		
 		thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
 		connectionAddingException = false;
 		inputField.setEditable(true);
