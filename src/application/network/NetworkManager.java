@@ -8,74 +8,128 @@ import java.util.Scanner;
 
 import application.controller.MainController;
 
-public class NetworkManager extends SocketInfo implements Runnable{
+public class NetworkManager extends Thread{
 	private Socket socket;
-	private String line;
-	public static MainController controller;
 	private Scanner scan;
 	private PrintWriter writer;
-	private int behaviour; 
-	private static boolean run;
+
+	private Object mutex;
+	private boolean run;
+
+	public MainController controller;
 	
-	public static final int OUTBOUND = 0;
-	public static final int INBOUND = 1;
-	
-	public NetworkManager()
+	private static int port;
+	private static String connectionName;
+	private static String username;
+	private static String namecolor;
+	private static String ip;
+
+	public NetworkManager(String name)
 	{
-		try {
-			socket = new Socket(this.getIp(), this.getPort());
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.setName(name);
 	}
 	
+	public void setController(MainController controller)
+	{
+		this.controller = controller;
+	}
+
 	public void rebindServer()
 	{
 		try {
 			socket = new Socket(this.getIp(), this.getPort());
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			controller.setReset(true);
+			this.run = false;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			controller.setReset(true);
+			this.run = false;
+		} finally
+		{
+			synchronized(controller.getConnectionMutex())
+			{
+				controller.getConnectionMutex().notifyAll();	
+			}
 		}
 	}
 	
-	public void sendMessage()
+	public Object getMutex()
 	{
-		while(true)
-			try {
-				writer = new PrintWriter(socket.getOutputStream(), true);
-				writer.println(line);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+		return this.mutex;
 	}
 
-	public void setBehaviour(int behaviour)
+	public void sendMessage(String msg)
 	{
-		if(behaviour != 0 || behaviour != 1)
-			return;
-		
-		this.behaviour = behaviour;
+		try {
+			writer = new PrintWriter(socket.getOutputStream(), true);
+			writer.println(this.getUsername() + "/" + msg + "/");
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public void disconnect()
+	{
+		this.run = false;
 	}
 
 	@Override
 	public void run() {
-		if(behaviour == 1)
-		{
-			
+		run = true;
+		this.rebindServer();
+		try {
+			String msg;
+			if(run)
+				scan = new Scanner(socket.getInputStream());
+			while(run)
+			{
+				msg = scan.nextLine();
+				if(run)
+					controller.addMessage(msg.substring(0, msg.indexOf("/")), msg.substring(msg.indexOf("/"), msg.lastIndexOf("/")));
+			}
+			if(scan != null)
+				scan.close();
+		} catch (IOException e) {
+			System.out.println(e.getClass().getName());
+			e.printStackTrace();
 		}
-		else
-		{
-			
-		}
+	}
+	
+	public static String getConnectionName() {
+		return connectionName;
+	}
+	public static void setConnectionName(String connectionName) {
+		NetworkManager.connectionName = connectionName;
+	}
+	
+	public static String getUsername() {
+		return username;
+	}
+	public static void setUsername(String username) {
+		NetworkManager.username = username;
+	}
+	
+	public static String getNamecolor() {
+		return namecolor;
+	}
+	public static void setNamecolor(String namecolor) {
+		NetworkManager.namecolor = namecolor;
+	}
+	
+	public int getPort() {
+		return port;
+	}
+	public static void setPort(int port) {
+		NetworkManager.port = port;
+	}
+	
+	public String getIp() {
+		return ip;
+	}
+	public static void setIp(String ip) {
+		NetworkManager.ip = ip;
 	}
 }

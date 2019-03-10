@@ -32,9 +32,19 @@ public class ServerController {
     public static boolean isConnected = false;
     
     @FXML
-    public void connect(MouseEvent event) {
-    	//controller.addExternalConnection(servername, username, IP, port);
-    	isConnected = true;
+    public void toggleConnection(MouseEvent event) {
+    	if(!isConnected)
+    	{
+    		controller.addExternalConnection(servername.getText(), username.getText(), IP.getText(), port.getText());
+    		this.connectIcon.setGlyphName("LAN_DISCONNECT");
+    		isConnected = true;
+    	}
+    	else
+    	{
+    		this.connectIcon.setGlyphName("LAN_CONNECT");
+    		controller.updateConnectionBar(false);
+    		isConnected = false;
+    	}
     }
     
     public String getServerHash()

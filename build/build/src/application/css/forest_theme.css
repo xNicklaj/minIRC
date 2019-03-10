@@ -1,10 +1,17 @@
-@font-face {
-    font-family: Roboto-Medium;
-    src: url(@../../../../../resources/shared/fonts/Roboto-Medium.ttf);
+ @font-face{
+ 	src: url("../../../resources/shared/fonts/Roboto-Medium.ttf");
+ }
+
+.addconnection-pane{
+	-fx-font-family: "Roboto Medium";
 }
 
-.text{
-	-fx-font-family: 'Roboto-Medium';
+.message-pane{
+	-fx-font-family: "Roboto Medium";	
+}
+
+.connection-pane{
+	-fx-font-family: "Roboto Medium";	
 }
 
 .icon{

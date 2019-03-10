@@ -1,11 +1,13 @@
 package application;
 	
 import application.controller.MainController;
+import application.filemanager.PathFinder;
 import application.filemanager.Settings;
 import application.network.SocketInfo;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -22,6 +24,7 @@ public class Main extends Application{
 		
 		Settings settings = new Settings();
 		settings.createSettings();
+		Font.loadFont(PathFinder.getResourcePath("shared\\fonts\\RobotoMedium.ttf"), 14);
 		
 		SocketInfo.setUsername("Nicklaj");
 		SocketInfo.setNamecolor("#ff0000");

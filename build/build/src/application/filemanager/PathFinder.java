@@ -14,7 +14,7 @@ public class PathFinder {
 	
 	public static String getResourcePath(String resource)
 	{
-		return getProjectPath() + "resources\\" + resource;
+		return getProjectPath()+ "resources\\" + resource;
 	}
 	
 	public static String getThemePath(String theme)

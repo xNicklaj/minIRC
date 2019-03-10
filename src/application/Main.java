@@ -33,7 +33,6 @@ public class Main extends Application{
 		
 		try {
 			SceneSwitcher switcher = new SceneSwitcher(primaryStage);
-			MainController.setSwitcher(switcher);
 			switcher.switchToMain();
 		} catch(Exception e) {
 			e.printStackTrace();

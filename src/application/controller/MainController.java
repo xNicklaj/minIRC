@@ -3,14 +3,12 @@ package application.controller;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
-import application.network.OutboundListener;
+import application.network.NetworkManager;
 import application.Message;
 import application.SceneSwitcher;
 import application.Server;
 import application.filemanager.Settings;
-import application.network.SocketInfo;
-import application.network.InboundListener;
-
+import application.network.NetworkManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -75,15 +73,9 @@ public class MainController {
 		return serverScrollpane;
 	}
 
-	private static OutboundListener outbound = new OutboundListener(); 
+	private static NetworkManager manager;
 
-	private static InboundListener inbound = new InboundListener();
-
-	private static SceneSwitcher switcher;
-
-	private static Thread outboundThread = new Thread();
-
-	private static Thread inboundThread = new Thread();
+	private Thread inboundThread;
 
 	private static boolean connectionAddingException = false;
 
@@ -99,22 +91,27 @@ public class MainController {
 		} 
 		return true; 
 	}
+	
+	public void setReset(boolean reset)
+	{
+		this.resetAll = reset;
+	}
 
 	private void addInternalConnection()
 	{
 		resetAll = false;
 		if(!connectionNameField.getText().trim().isEmpty() && !usernameField.getText().trim().isEmpty() && !IPField.getText().trim().isEmpty() && !portField.getText().trim().isEmpty())
 		{
-			SocketInfo.setConnectionName(connectionNameField.getText());
-			SocketInfo.setUsername(usernameField.getText());
+			NetworkManager.setConnectionName(connectionNameField.getText());
+			NetworkManager.setUsername(usernameField.getText());
 			if(!validateIPAddress(IPField.getText()))
 			{
 				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 				connectionAddingException = true;	
 			}
-			SocketInfo.setIp(IPField.getText());
+			NetworkManager.setIp(IPField.getText());
 			try {
-				SocketInfo.setPort(Integer.parseInt(portField.getText()));
+				NetworkManager.setPort(Integer.parseInt(portField.getText()));
 			}catch(NumberFormatException e)
 			{
 				portField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
@@ -131,19 +128,11 @@ public class MainController {
 			IPField.clear();
 			portField.clear();
 			
-			if(outboundThread != null)
+			if(inboundThread != null)
 			{
-				outbound.semaphore = false;
-				synchronized (outbound.getMutex()) {					
-					outbound.getMutex().notify();
-				}
+				manager.disconnect();
 			}
-			outboundThread = new Thread(outbound);
-			inboundThread = new Thread(inbound);
-			outboundThread.setName("outbound-thread");
-			inboundThread.setName("inbound-thread");
-			outboundThread.start();
-			inboundThread.start();
+			manager.start();
 			
 			try {
 				synchronized(connectionMutex) {
@@ -155,7 +144,7 @@ public class MainController {
 				e.printStackTrace();
 			}
 			
-			thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
+			thisConnection.setText(NetworkManager.getConnectionName() + ", connesso come " + NetworkManager.getUsername());
 			connectionAddingException = false;
 			inputField.setEditable(true);
 		}
@@ -177,7 +166,7 @@ public class MainController {
 	public void updateConnectionBar(boolean isConnected)
 	{
 		if(isConnected)
-			thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
+			thisConnection.setText(NetworkManager.getConnectionName() + ", connesso come " + NetworkManager.getUsername());
 		else
 			this.thisConnection.setText("non connesso");
 	}
@@ -216,13 +205,7 @@ public class MainController {
 	private void sendFromReturn(KeyEvent event) {
 		if(event.getCode() == KeyCode.ENTER && !inputField.getText().trim().isEmpty())
 		{
-			Message message = new Message();
-			message.setUsername(SocketInfo.getUsername());
-			message.setMessage(inputField.getText());
-			outbound.sendMessage(inputField.getText());
-			chatPaneContent.getChildren().add(message);
-			//chatPane.setContent(message);
-			inputField.clear();
+			this.sendMessage();
 		}
 	}
 
@@ -231,31 +214,31 @@ public class MainController {
 		if(inputField.getText().trim().isEmpty())
 			return;
 		
+		this.sendMessage();
+	}
+	
+	private void sendMessage()
+	{
 		Message message = new Message();
-		message.setUsername(SocketInfo.getUsername());
+		message.setUsername(NetworkManager.getUsername());
 		message.setMessage(inputField.getText());
-		outbound.sendMessage(inputField.getText());
+		manager.sendMessage(inputField.getText());
 		chatPaneContent.getChildren().add(message);
 		//chatPane.setContent(message);
 		inputField.clear();
 	}
 
-	public static void setSwitcher(SceneSwitcher switcher)
-	{
-		MainController.switcher = switcher;
-	}
-
 	public void addExternalConnection(String servername, String username, String IP, String port)
 	{
-		SocketInfo.setConnectionName(servername);
-		SocketInfo.setUsername(username);
+		NetworkManager.setConnectionName(servername);
+		NetworkManager.setUsername(username);
 		if(!validateIPAddress(IP))
 		{
 			connectionAddingException = true;	
 		}
-		SocketInfo.setIp(IP);
+		NetworkManager.setIp(IP);
 		try {
-			SocketInfo.setPort(Integer.parseInt(port));
+			NetworkManager.setPort(Integer.parseInt(port));
 		}catch(NumberFormatException e)
 		{
 			connectionAddingException = true;
@@ -266,19 +249,14 @@ public class MainController {
 		Settings settings = new Settings();
 		settings.addServer(servername, username, IP, port);
 		
-		if(outboundThread != null)
+		if(inboundThread != null)
 		{
-			outbound.semaphore = false;
-			synchronized (outbound.getMutex()) {					
-				outbound.getMutex().notify();
-			}
+			manager.disconnect();
 		}
-		outboundThread = new Thread(outbound);
-		inboundThread = new Thread(inbound);
-		outboundThread.setName("outbound-thread");
-		inboundThread.setName("inbound-thread");
-		outboundThread.start();
-		inboundThread.start();
+		manager = new NetworkManager("inbound-thread");
+		manager.setController(this);
+		manager.start();
+		
 		
 		try {
 			synchronized(connectionMutex) {
@@ -290,9 +268,14 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
-		thisConnection.setText(SocketInfo.getConnectionName() + ", connesso come " + SocketInfo.getUsername());
+		thisConnection.setText(NetworkManager.getConnectionName() + ", connesso come " + NetworkManager.getUsername());
 		connectionAddingException = false;
 		inputField.setEditable(true);
+	}
+	
+	public Object getConnectionMutex()
+	{
+		return this.connectionMutex;
 	}
 	
 

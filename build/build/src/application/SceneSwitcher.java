@@ -23,7 +23,7 @@ public class SceneSwitcher {
 		this.primaryStage = primaryStage;
 		//primaryStage.initStyle(StageStyle.UNDECORATED);
 		//primaryStage.setFullScreen(true);
-		primaryStage.setResizable(false);
+		//primaryStage.setResizable(false);
 		primaryStage.setTitle("minIRC - Minimal IRC");
 	}
 	
@@ -46,10 +46,12 @@ public class SceneSwitcher {
 		controller = (MainController) loader.getController();
 		InboundListener.controller = controller;
 		ServerController.controller = controller;
+		
 		controller.getInputField().setEditable(false);
 		controller.getServerScrollpane().setVbarPolicy(ScrollBarPolicy.NEVER);
 		controller.getServerScrollpane().setHbarPolicy(ScrollBarPolicy.NEVER);
 		controller.evaluateStoredServer();
+		
 		mainScene = new Scene(root, 1280, 720);
 		if(settings.getThemeName().equals("mountain"))
 			mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());
