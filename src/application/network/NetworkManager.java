@@ -1,6 +1,8 @@
 package application.network;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -10,7 +12,7 @@ import application.controller.MainController;
 
 public class NetworkManager extends Thread{
 	private Socket socket;
-	private Scanner scan;
+	private BufferedReader scan;
 	private PrintWriter writer;
 
 	private Object mutex;
@@ -38,6 +40,8 @@ public class NetworkManager extends Thread{
 	{
 		try {
 			socket = new Socket(this.getIp(), this.getPort());
+			writer = new PrintWriter(socket.getOutputStream(), true);
+			writer.println(NetworkManager.username);
 		} catch (UnknownHostException e) {
 			controller.setReset(true);
 			this.run = false;
@@ -62,8 +66,8 @@ public class NetworkManager extends Thread{
 	{
 		try {
 			writer = new PrintWriter(socket.getOutputStream(), true);
-			writer.println(this.getUsername() + "/" + msg + "/");
-			writer.flush();
+			writer.println(msg);
+			//writer.flush();
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -83,10 +87,10 @@ public class NetworkManager extends Thread{
 		try {
 			String msg;
 			if(run)
-				scan = new Scanner(socket.getInputStream());
+				scan = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while(run)
 			{
-				msg = scan.nextLine();
+				msg = scan.readLine();
 				if(run)
 					controller.addMessage(msg.substring(0, msg.indexOf("/")), msg.substring(msg.indexOf("/"), msg.lastIndexOf("/")));
 			}

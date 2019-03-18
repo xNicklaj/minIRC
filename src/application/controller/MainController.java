@@ -132,6 +132,7 @@ public class MainController {
 			{
 				manager.disconnect();
 			}
+			manager = new NetworkManager("inbound-thread");
 			manager.start();
 			
 			try {
