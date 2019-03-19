@@ -373,18 +373,19 @@ public class MainController {
 			}
 			
 			try {
-				PrintWriter writer = new PrintWriter(manager.getSocket().getOutputStream());
+				PrintWriter writer = new PrintWriter(manager.getSocket().getOutputStream(), true);
 				writer.println("register");
-				System.out.println("register sent");
 				writer.println(manager.getUsername());
 				writer.println(manager.getPassword());
-			} catch (IOException e1) {
-				System.out.println(e1.getClass().getName());
-				e1.printStackTrace();
+				writer.flush();
+				System.out.println("register sent");
+			} catch (IOException e) {
+				System.out.println(e.getClass().getName());
+				e.printStackTrace();
 			}
 			
 			try {
-				while(new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine() != "1");
+				new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine();
 			} catch (IOException e1) {
 				System.out.println(e1.getClass().getName());
 				e1.printStackTrace();
