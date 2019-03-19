@@ -26,6 +26,8 @@ public class ServerController {
     @FXML
     private Text port;
     
+    private String password;
+    
     public static MainController controller;
     
     public static boolean isConnected = false;
@@ -34,16 +36,21 @@ public class ServerController {
     public void toggleConnection(MouseEvent event) {
     	if(!isConnected)
     	{
-    		controller.addExternalConnection(servername.getText(), username.getText(), IP.getText(), port.getText());
+    		controller.loginFromRecord(username.getText(), this.password, IP.getText(), port.getText());
     		this.connectIcon.setGlyphName("LAN_DISCONNECT");
     		isConnected = true;
     	}
     	else
     	{
     		this.connectIcon.setGlyphName("LAN_CONNECT");
-    		controller.updateConnectionBar(false);
+    		//controller.updateConnectionBar(false);
     		isConnected = false;
     	}
+    }
+    
+    public void setPassword(String password)
+    {
+    	this.password = password;
     }
     
     public String getServerHash()

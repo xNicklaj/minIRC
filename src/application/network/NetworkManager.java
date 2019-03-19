@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
-
 import application.controller.MainController;
 
 public class NetworkManager extends Thread{
@@ -20,28 +18,76 @@ public class NetworkManager extends Thread{
 
 	public MainController controller;
 	
-	private static int port;
-	private static String connectionName;
-	private static String username;
-	private static String namecolor;
-	private static String ip;
+	private int port;
+	private String connectionName;
+	private String username;
+	private String password;
+	public String getPassword() {
+		return password;
+	}
+
+	public String getConnectionName() {
+		return connectionName;
+	}
+
+	public Socket getSocket() {
+		return socket;
+	}
+
+	public  String getUsername() {
+		return username;
+	}
+
+	public int getPort() {
+		return port;
+	}
+
+	public Object getMutex()
+	{
+		return this.mutex;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setController(MainController controller)
+	{
+		this.controller = controller;
+	}
+
+	public void setConnectionName(String connectionName) {
+		this.connectionName = connectionName;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	private String ip;
 
 	public NetworkManager(String name)
 	{
 		this.setName(name);
 	}
 	
-	public void setController(MainController controller)
-	{
-		this.controller = controller;
-	}
-
 	public void rebindServer()
 	{
 		try {
 			socket = new Socket(this.getIp(), this.getPort());
 			writer = new PrintWriter(socket.getOutputStream(), true);
-			writer.println(NetworkManager.username);
+			writer.println(this.username);
 		} catch (UnknownHostException e) {
 			controller.setReset(true);
 			this.run = false;
@@ -57,11 +103,6 @@ public class NetworkManager extends Thread{
 		}
 	}
 	
-	public Object getMutex()
-	{
-		return this.mutex;
-	}
-
 	public void sendMessage(String msg)
 	{
 		try {
@@ -100,40 +141,5 @@ public class NetworkManager extends Thread{
 			System.out.println(e.getClass().getName());
 			e.printStackTrace();
 		}
-	}
-	
-	public static String getConnectionName() {
-		return connectionName;
-	}
-	public static void setConnectionName(String connectionName) {
-		NetworkManager.connectionName = connectionName;
-	}
-	
-	public static String getUsername() {
-		return username;
-	}
-	public static void setUsername(String username) {
-		NetworkManager.username = username;
-	}
-	
-	public static String getNamecolor() {
-		return namecolor;
-	}
-	public static void setNamecolor(String namecolor) {
-		NetworkManager.namecolor = namecolor;
-	}
-	
-	public int getPort() {
-		return port;
-	}
-	public static void setPort(int port) {
-		NetworkManager.port = port;
-	}
-	
-	public String getIp() {
-		return ip;
-	}
-	public static void setIp(String ip) {
-		NetworkManager.ip = ip;
 	}
 }

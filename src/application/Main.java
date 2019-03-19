@@ -1,6 +1,5 @@
 package application;
 	
-import application.controller.MainController;
 import application.filemanager.PathFinder;
 import application.filemanager.Settings;
 import application.network.SocketInfo;

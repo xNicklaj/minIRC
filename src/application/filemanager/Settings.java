@@ -32,7 +32,7 @@ public class Settings implements XMLLoadable{
 		this.settings.createXML(this);
 	}
 	
-	public void addServer(String servername, String username, String serverIP, String serverport)
+	public void addServer(String servername, String username, String password, String serverIP, String serverport)
 	{
 		String[] parentNodes = new String[2];
 		String[] content = new String[4];
@@ -61,6 +61,9 @@ public class Settings implements XMLLoadable{
 		Element userName = new Element("username");
 		userName.setText(username);
 		
+		Element passWord = new Element("password");
+		passWord.setText(password);
+		
 		Element serverip = new Element("serverIP");
 		serverip.setText(serverIP);
 		
@@ -69,6 +72,7 @@ public class Settings implements XMLLoadable{
 		
 		server.addContent(serverName);
 		server.addContent(userName);
+		server.addContent(passWord);
 		server.addContent(serverip);
 		server.addContent(serverPort);
 		

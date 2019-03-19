@@ -10,26 +10,26 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MainController">
+<AnchorPane minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MainController">
    <children>
       <AnchorPane id="BackgroundImageLayer" layoutX="7.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <ColorAdjust brightness="-0.14" />
          </effect>
       </AnchorPane>
-      <AnchorPane id="MainPane" layoutX="481.0" prefHeight="57.0" prefWidth="724.0" styleClass="addconnection-pane" AnchorPane.leftAnchor="481.0" AnchorPane.rightAnchor="75.0" AnchorPane.topAnchor="12.0">
+      <AnchorPane id="MainPane" layoutX="562.0" prefHeight="57.0" prefWidth="644.0" styleClass="addconnection-pane" AnchorPane.topAnchor="12.0">
          <effect>
             <DropShadow blurType="GAUSSIAN" color="#000000ad" offsetX="-6.0" offsetY="6.0" />
          </effect>
          <children>
-            <JFXTextField fx:id="connectionNameField" layoutX="14.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="137.0" promptText="Nome connessione" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
-            <JFXTextField fx:id="usernameField" layoutX="165.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="118.0" promptText="Nome utente" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
+            <JFXTextField fx:id="usernameField" layoutX="14.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="137.0" promptText="Nome utente" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
+            <JFXTextField fx:id="passwordField" layoutX="165.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="118.0" promptText="Password" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
             <JFXTextField fx:id="IPField" layoutX="296.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="125.0" promptText="Indirizzo IP" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
-            <JFXTextField fx:id="portField" layoutX="438.0" layoutY="16.0" onKeyPressed="#checkIfEmpty" prefHeight="25.0" prefWidth="103.0" promptText="Porta" AnchorPane.bottomAnchor="16.0" AnchorPane.topAnchor="16.0" />
-            <JFXButton id="AddButton" fx:id="addConnectionButton" buttonType="RAISED" layoutX="563.0" layoutY="-2.0" onAction="#addConnection" prefHeight="49.0" prefWidth="155.0" text="Aggiungi" AnchorPane.bottomAnchor="5.0" AnchorPane.topAnchor="5.0" />
+            <JFXButton id="AddButton" fx:id="registerButton" buttonType="RAISED" layoutX="432.0" layoutY="6.0" onAction="#register" prefHeight="45.0" prefWidth="95.0" text="Registrati" AnchorPane.bottomAnchor="6.0" AnchorPane.topAnchor="6.0" />
+            <JFXButton id="AddButton" fx:id="loginButton" buttonType="RAISED" layoutX="536.0" layoutY="6.0" onAction="#login" prefHeight="45.0" prefWidth="95.0" text="Accedi" AnchorPane.bottomAnchor="6.0" AnchorPane.topAnchor="6.0" />
          </children>
       </AnchorPane>
-      <AnchorPane id="MainPane" prefHeight="57.0" prefWidth="467.0" styleClass="connection-pane" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="12.0">
+      <AnchorPane id="MainPane" prefHeight="57.0" prefWidth="549.0" styleClass="connection-pane" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="12.0">
          <effect>
             <DropShadow blurType="GAUSSIAN" color="#000000ad" offsetX="-6.0" offsetY="6.0" />
          </effect>
