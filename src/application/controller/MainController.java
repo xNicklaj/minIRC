@@ -375,9 +375,9 @@ public class MainController {
 			try {
 				PrintWriter writer = new PrintWriter(manager.getSocket().getOutputStream());
 				writer.println("register");
+				System.out.println("register sent");
 				writer.println(manager.getUsername());
 				writer.println(manager.getPassword());
-				writer.close();
 			} catch (IOException e1) {
 				System.out.println(e1.getClass().getName());
 				e1.printStackTrace();

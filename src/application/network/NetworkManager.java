@@ -124,7 +124,8 @@ public class NetworkManager extends Thread{
 	@Override
 	public void run() {
 		run = true;
-		this.rebindServer();
+		if(socket == null)
+			System.err.println("You need to first bind the socket");
 		try {
 			String msg;
 			if(run)
@@ -133,7 +134,7 @@ public class NetworkManager extends Thread{
 			{
 				msg = scan.readLine();
 				if(run)
-					controller.addMessage(msg.substring(0, msg.indexOf("/")), msg.substring(msg.indexOf("/"), msg.lastIndexOf("/")));
+					controller.addMessage("a" /*TODO: insert username*/, msg);
 			}
 			if(scan != null)
 				scan.close();
