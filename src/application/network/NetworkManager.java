@@ -87,7 +87,7 @@ public class NetworkManager extends Thread{
 		try {
 			socket = new Socket(this.getIp(), this.getPort());
 			writer = new PrintWriter(socket.getOutputStream(), true);
-			writer.println(this.username);
+			scan = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (UnknownHostException e) {
 			controller.setReset(true);
 			this.run = false;
@@ -108,8 +108,6 @@ public class NetworkManager extends Thread{
 		try {
 			writer = new PrintWriter(socket.getOutputStream(), true);
 			writer.println(msg);
-			//writer.flush();
-			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -128,16 +126,15 @@ public class NetworkManager extends Thread{
 			System.err.println("You need to first bind the socket");
 		try {
 			String msg;
-			if(run)
-				scan = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			while(run)
 			{
-				msg = scan.readLine();
 				if(run)
-					controller.addMessage("a" /*TODO: insert username*/, msg);
+					controller.addMessage(scan.readLine(), scan.readLine());
 			}
 			if(scan != null)
 				scan.close();
+			if(writer != null)
+				writer.close();
 		} catch (IOException e) {
 			System.out.println(e.getClass().getName());
 			e.printStackTrace();

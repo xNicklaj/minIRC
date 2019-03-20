@@ -95,6 +95,8 @@ public class MainController {
 				this.port = Integer.parseInt(tokens[tokens.length - 1].substring(tokens[tokens.length - 1].indexOf(":") + 1));
 				tokens[tokens.length - 1] = tokens[tokens.length - 1].substring(0, tokens[tokens.length - 1].lastIndexOf(":"));
 			}
+			else
+				port = 2332;
 		}catch(NumberFormatException e)
 		{
 			IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
@@ -167,14 +169,13 @@ public class MainController {
 				writer.println("login");
 				writer.println(manager.getUsername());
 				writer.println(manager.getPassword());
-				writer.close();
 			} catch (IOException e1) {
 				System.out.println(e1.getClass().getName());
 				e1.printStackTrace();
 			}
 			
 			try {
-				while(new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine() != "1");
+				new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine();
 			} catch (IOException e1) {
 				System.out.println(e1.getClass().getName());
 				e1.printStackTrace();
@@ -206,78 +207,6 @@ public class MainController {
 		this.evaluateStoredServer();
 	}
 
-	/*private void addInternalConnection()
-	{
-		resetAll = false;
-		if(!usernameField.getText().trim().isEmpty() && !IPField.getText().trim().isEmpty() && !passwordField.getText().trim().isEmpty())
-		{
-			manager = new NetworkManager("inbound-thread@" + IPField.getText());
-			manager.setUsername(usernameField.getText());
-			if(!validateIPAddress(IPField.getText()))
-			{
-				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-				connectionAddingException = true;	
-			}
-			manager.setIp(IPField.getText());
-			
-			if(connectionAddingException)
-				return;
-
-			if(manager != null)
-			{
-				manager.disconnect();
-			}
-			manager = new NetworkManager("inbound-thread@" + manager.getIp());
-			try {
-				manager.setConnectionName(new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine());
-			} catch (IOException e1) {
-				System.out.println(e1.getClass().getName());
-				e1.printStackTrace();
-			}
-			manager.start();
-			
-			Settings settings = new Settings();
-			settings.addServer(manager.getUsername(), usernameField.getText(), IPField.getText(), Integer.toString(this.port));
-
-			usernameField.clear();
-			passwordField.clear();
-			IPField.clear();
-
-			try {
-				synchronized(connectionMutex) {
-					MainController.connectionMutex.wait();
-				}
-				if(resetAll)
-					return;
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			thisConnection.setText(manager.getConnectionName() + ", connesso come " + manager.getUsername());
-			connectionAddingException = false;
-			inputField.setEditable(true);
-		}
-		else
-		{
-			connectionAddingException = true;
-			if(usernameField.getText().trim().isEmpty())
-				usernameField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-			if(passwordField.getText().trim().isEmpty())
-				passwordField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-			if(IPField.getText().trim().isEmpty())
-				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
-		}
-		this.evaluateStoredServer();
-	}
-
-	public void updateConnectionBar(boolean isConnected)
-	{
-		if(isConnected)
-			thisConnection.setText(manager.getConnectionName() + ", connesso come " + manager.getUsername());
-		else
-			this.thisConnection.setText("non connesso");
-	}*/
-
 	public void loginFromRecord(String username, String password, String IP, String port)
 	{
 		if(manager != null)
@@ -306,14 +235,13 @@ public class MainController {
 			writer.println("login");
 			writer.println(manager.getUsername());
 			writer.println(manager.getPassword());
-			writer.close();
 		} catch (IOException e) {
 			System.out.println(e.getClass().getName());
 			e.printStackTrace();
 		}
 		
 		try {
-			while(new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine() != "1");
+			new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine();
 		} catch (IOException e) {
 			System.out.println(e.getClass().getName());
 			e.printStackTrace();
@@ -378,7 +306,6 @@ public class MainController {
 				writer.println(manager.getUsername());
 				writer.println(manager.getPassword());
 				writer.flush();
-				System.out.println("register sent");
 			} catch (IOException e) {
 				System.out.println(e.getClass().getName());
 				e.printStackTrace();
