@@ -63,24 +63,20 @@ public class MainController {
 	private VBox serverList;
 	
 	@FXML
-    void login(ActionEvent event) {
+    private void login(ActionEvent event) {
 		if(event.getSource() == loginButton)
 			this.loginFromInput();
     }
 
     @FXML
-    void register(ActionEvent event) {
+    private void register(ActionEvent event) {
     	if(event.getSource() == registerButton)
     		this.registerFromInput();
     }
 	
-	int port;
+	private int port;
 
 	private Server currentServer;
-
-	public ScrollPane getServerScrollpane() {
-		return serverScrollpane;
-	}
 
 	private static NetworkManager manager;
 
@@ -116,9 +112,71 @@ public class MainController {
 		return true;	
 	}
 
+	@FXML
+	private void addConnection(ActionEvent event) {
+		//this.addInternalConnection();
+	}
+
+	@FXML
+	private void checkIfEmpty(KeyEvent event) {
+		if(connectionAddingException)
+		{
+			if(event.getSource() == usernameField) {
+				if(!usernameField.getText().trim().isEmpty())
+					usernameField.setStyle("-jfx-unfocus-color: #000000;");
+			}
+			else if(event.getSource() == IPField) {
+				if(!IPField.getText().trim().isEmpty())
+					IPField.setStyle("-jfx-unfocus-color: #000000;");
+			}
+			else if(event.getSource() == passwordField) {
+				if(!passwordField.getText().trim().isEmpty())
+					passwordField.setStyle("-jfx-unfocus-color: #000000;");
+			}
+		}
+		if(event.getCode() == KeyCode.ENTER);
+			//addInternalConnection();
+	}
+
+	@FXML
+	private void sendFromReturn(KeyEvent event) {
+		if(event.getCode() == KeyCode.ENTER && !inputField.getText().trim().isEmpty())
+		{
+			this.sendMessage();
+		}
+	}
+
+	@FXML
+	private void sendMessage(ActionEvent event) {
+		if(inputField.getText().trim().isEmpty())
+			return;
+	
+		this.sendMessage();
+	}
+
+	private void sendMessage()
+	{
+		//Message message = new Message();
+		//message.setUsername(manager.getUsername());
+		//message.setMessage(inputField.getText());
+		manager.sendMessage(inputField.getText());
+		//chatPaneContent.getChildren().add(message);
+		//chatPane.setContent(message);
+		inputField.clear();
+	}
+
+	public ScrollPane getServerScrollpane() {
+		return serverScrollpane;
+	}
+
 	public void setReset(boolean reset)
 	{
 		this.resetAll = reset;
+	}
+	
+	public void setConnected(String servername)
+	{
+		this.thisConnection.setText(servername);
 	}
 	
 	public void loginFromInput()
@@ -190,7 +248,7 @@ public class MainController {
 			passwordField.clear();
 			IPField.clear();
 	
-			thisConnection.setText(manager.getConnectionName() + ", connesso come " + manager.getUsername());
+			thisConnection.setText(manager.getConnectionName());
 			connectionAddingException = false;
 			inputField.setEditable(true);
 		}
@@ -269,6 +327,7 @@ public class MainController {
 			manager = new NetworkManager("inbound-thread@" + IPField.getText());
 			
 			manager.setUsername(usernameField.getText());
+			manager.setPassword(passwordField.getText());
 			
 			if(!validateIPAddress(IPField.getText()))
 			{
@@ -327,7 +386,7 @@ public class MainController {
 			passwordField.clear();
 			IPField.clear();
 	
-			thisConnection.setText(manager.getConnectionName() + ", connesso come " + manager.getUsername());
+			thisConnection.setText(manager.getConnectionName());
 			connectionAddingException = false;
 			inputField.setEditable(true);
 		}
@@ -342,59 +401,6 @@ public class MainController {
 				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 		}
 		this.evaluateStoredServer();
-	}
-
-	@FXML
-	private void addConnection(ActionEvent event) {
-		//this.addInternalConnection();
-	}
-
-	@FXML
-	private void checkIfEmpty(KeyEvent event) {
-		if(connectionAddingException)
-		{
-			if(event.getSource() == usernameField) {
-				if(!usernameField.getText().trim().isEmpty())
-					usernameField.setStyle("-jfx-unfocus-color: #000000;");
-			}
-			else if(event.getSource() == IPField) {
-				if(!IPField.getText().trim().isEmpty())
-					IPField.setStyle("-jfx-unfocus-color: #000000;");
-			}
-			else if(event.getSource() == passwordField) {
-				if(!passwordField.getText().trim().isEmpty())
-					passwordField.setStyle("-jfx-unfocus-color: #000000;");
-			}
-		}
-		if(event.getCode() == KeyCode.ENTER);
-			//addInternalConnection();
-	}
-
-	@FXML
-	private void sendFromReturn(KeyEvent event) {
-		if(event.getCode() == KeyCode.ENTER && !inputField.getText().trim().isEmpty())
-		{
-			this.sendMessage();
-		}
-	}
-
-	@FXML
-	private void sendMessage(ActionEvent event) {
-		if(inputField.getText().trim().isEmpty())
-			return;
-
-		this.sendMessage();
-	}
-
-	private void sendMessage()
-	{
-		Message message = new Message();
-		message.setUsername(manager.getUsername());
-		message.setMessage(inputField.getText());
-		manager.sendMessage(inputField.getText());
-		chatPaneContent.getChildren().add(message);
-		//chatPane.setContent(message);
-		inputField.clear();
 	}
 
 	public Object getConnectionMutex()

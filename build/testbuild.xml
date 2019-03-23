@@ -49,6 +49,7 @@
 		</copy>
 	
 		<mkdir dir="projectRefs" />
+		
 		<mkdir dir="resources" />
 		<copy todir="resources">
 			<fileset dir="D:\users\simon\GitHub\minIRC">
@@ -97,7 +98,7 @@
 			<exclude name="**/*.java"/>
 		</fileset>
 		</copy>
-	
+		
 		<!-- Copy of resources -->
 		<copy todir="build/resources">
 		<fileset dir="resources">
@@ -143,7 +144,7 @@
 			<manifest>
 				<attribute name="Implementation-Vendor" value="Simone Aronica"/>
 				<attribute name="Implementation-Title" value="minIRC"/>
-				<attribute name="Implementation-Version" value="0.3"/>
+				<attribute name="Implementation-Version" value="0.2"/>
 				<attribute name="JavaFX-Feature-Proxy" value="None"/>
 			</manifest>
 		</fx:jar>

@@ -34,6 +34,11 @@ public class Server extends Pane{
 		getChildren().add(view);
 	}
 	
+	public void setPassword(String password)
+	{
+		controller.setPassword(password);
+	}
+	
 	public void setServerName(String servername)
 	{
 		controller.getServername().setText(servername);

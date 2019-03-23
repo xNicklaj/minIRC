@@ -25,6 +25,7 @@ public class SceneSwitcher {
 		//primaryStage.setFullScreen(true);
 		//primaryStage.setResizable(false);
 		primaryStage.setTitle("minIRC - Minimal IRC");
+		primaryStage.setResizable(false);
 	}
 	
 	public SceneSwitcher() {
@@ -48,6 +49,7 @@ public class SceneSwitcher {
 		ServerController.controller = controller;
 		
 		controller.getInputField().setEditable(false);
+		controller.getPasswordField().setAccessibleText(" ");
 		controller.getServerScrollpane().setVbarPolicy(ScrollBarPolicy.NEVER);
 		controller.getServerScrollpane().setHbarPolicy(ScrollBarPolicy.NEVER);
 		controller.evaluateStoredServer();

@@ -6,11 +6,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import application.controller.Buffer;
+import application.controller.ConnectedServerUpdater;
 import application.controller.MainController;
+import javafx.application.Platform;
 
 public class NetworkManager extends Thread{
 	private Socket socket;
-	private BufferedReader scan;
+	private BufferedReader reader;
 	private PrintWriter writer;
 
 	private Object mutex;
@@ -87,19 +91,13 @@ public class NetworkManager extends Thread{
 		try {
 			socket = new Socket(this.getIp(), this.getPort());
 			writer = new PrintWriter(socket.getOutputStream(), true);
-			scan = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (UnknownHostException e) {
 			controller.setReset(true);
 			this.run = false;
 		} catch (IOException e) {
 			controller.setReset(true);
 			this.run = false;
-		} finally
-		{
-			synchronized(controller.getConnectionMutex())
-			{
-				controller.getConnectionMutex().notifyAll();	
-			}
 		}
 	}
 	
@@ -125,19 +123,34 @@ public class NetworkManager extends Thread{
 		if(socket == null)
 			System.err.println("You need to first bind the socket");
 		try {
-			String msg;
+			String username;
+			String message;
 			while(run)
 			{
-				if(run)
-					controller.addMessage(scan.readLine(), scan.readLine());
+				username = reader.readLine();
+				if(!run) return;
+				message = reader.readLine();
+				if(!run) return;
+				if(username.equals("admin") && message.substring(0, 3).equals("0xc"))
+				{
+					switch(message)
+					{
+					case "0xc0001":
+						this.disconnect();
+						this.controller.getInputField().setEditable(false);
+						Platform.runLater(new ConnectedServerUpdater("Non connesso", controller));
+						break;
+					}
+				}
+				else
+					Platform.runLater(new Buffer(username, message, controller));
 			}
-			if(scan != null)
-				scan.close();
+			if(reader != null)
+				reader.close();
 			if(writer != null)
 				writer.close();
 		} catch (IOException e) {
-			System.out.println(e.getClass().getName());
-			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 }
