@@ -24,7 +24,7 @@ public class MainController {
 
 	public static Object connectionMutex = new Object();
 
-	public static boolean resetAll;
+	public boolean resetAll;
 
 	@FXML
 	private JFXTextField usernameField;
@@ -402,12 +402,6 @@ public class MainController {
 		}
 		this.evaluateStoredServer();
 	}
-
-	public Object getConnectionMutex()
-	{
-		return this.connectionMutex;
-	}
-
 
 	public void addMessage(String username, String text)
 	{

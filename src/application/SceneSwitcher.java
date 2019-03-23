@@ -3,9 +3,7 @@ package application;
 import java.io.IOException;
 
 import application.controller.MainController;
-import application.controller.ServerController;
 import application.filemanager.Settings;
-import application.network.InboundListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -40,13 +38,10 @@ public class SceneSwitcher {
 		try {
 			root = loader.load();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		root.setId("anchor");
 		controller = (MainController) loader.getController();
-		InboundListener.controller = controller;
-		ServerController.controller = controller;
 		
 		controller.getInputField().setEditable(false);
 		controller.getPasswordField().setAccessibleText(" ");
