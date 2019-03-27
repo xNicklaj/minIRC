@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXListView;
 
 import application.network.NetworkManager;
 import application.Message;
@@ -63,6 +64,9 @@ public class MainController {
 	private VBox serverList;
 	
 	@FXML
+    private JFXListView<?> JFXListView;
+	
+	@FXML
     private void login(ActionEvent event) {
 		if(event.getSource() == loginButton)
 			this.loginFromInput();
@@ -72,6 +76,11 @@ public class MainController {
     private void register(ActionEvent event) {
     	if(event.getSource() == registerButton)
     		this.registerFromInput();
+    }
+    
+    public JFXListView<?> getThemesList()
+    {
+    	return this.JFXListView;
     }
 	
 	private int port;
