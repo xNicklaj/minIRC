@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 
 import application.controller.MainController;
+import application.controller.ServerController;
 import application.filemanager.Settings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -42,6 +43,8 @@ public class SceneSwitcher {
 		}
 		root.setId("anchor");
 		controller = (MainController) loader.getController();
+		
+		ServerController.controller = controller;
 		
 		controller.getInputField().setEditable(false);
 		controller.getPasswordField().setAccessibleText(" ");

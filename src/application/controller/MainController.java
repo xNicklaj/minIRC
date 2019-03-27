@@ -76,11 +76,19 @@ public class MainController {
 	
 	private int port;
 
-	private Server currentServer;
+	private Server currentServer = null;
 
 	private static NetworkManager manager;
 
 	private static boolean connectionAddingException = false;
+
+	public Server getCurrentServer() {
+		return currentServer;
+	}
+
+	public void setCurrentServer(Server currentServer) {
+		this.currentServer = currentServer;
+	}
 
 	private boolean validateIPAddress(String ipAddress) { 
 		String[] tokens = ipAddress.split("\\.");
@@ -223,13 +231,14 @@ public class MainController {
 			}
 			
 			try {
-				PrintWriter writer = new PrintWriter(manager.getSocket().getOutputStream());
+				PrintWriter writer = new PrintWriter(manager.getSocket().getOutputStream(), true);
 				writer.println("login");
 				writer.println(manager.getUsername());
 				writer.println(manager.getPassword());
-			} catch (IOException e1) {
-				System.out.println(e1.getClass().getName());
-				e1.printStackTrace();
+				writer.flush();
+			} catch (IOException e) {
+				System.out.println(e.getClass().getName());
+				e.printStackTrace();
 			}
 			
 			try {
@@ -242,12 +251,12 @@ public class MainController {
 			manager.start();
 			
 			Settings settings = new Settings();
-			settings.addServer(manager.getUsername(), usernameField.getText(), passwordField.getText(), IPField.getText(), Integer.toString(this.port));
-	
+			settings.addServer(manager.getConnectionName(), manager.getUsername(), passwordField.getText(), IPField.getText(), Integer.toString(this.port));
+			
 			usernameField.clear();
 			passwordField.clear();
 			IPField.clear();
-	
+
 			thisConnection.setText(manager.getConnectionName());
 			connectionAddingException = false;
 			inputField.setEditable(true);
@@ -263,6 +272,11 @@ public class MainController {
 				IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 		}
 		this.evaluateStoredServer();
+	}
+	
+	public NetworkManager getNetworkManager()
+	{
+		return MainController.manager;
 	}
 
 	public void loginFromRecord(String username, String password, String IP, String port)
@@ -283,16 +297,17 @@ public class MainController {
 		manager.rebindServer();
 		try {
 			manager.setConnectionName(new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine());
-		} catch (IOException e) {
-			System.out.println(e.getClass().getName());
-			e.printStackTrace();
+		} catch (IOException e1) {
+			System.out.println(e1.getClass().getName());
+			e1.printStackTrace();
 		}
 		
 		try {
-			PrintWriter writer = new PrintWriter(manager.getSocket().getOutputStream());
+			PrintWriter writer = new PrintWriter(manager.getSocket().getOutputStream(), true);
 			writer.println("login");
 			writer.println(manager.getUsername());
 			writer.println(manager.getPassword());
+			writer.flush();
 		} catch (IOException e) {
 			System.out.println(e.getClass().getName());
 			e.printStackTrace();
@@ -300,19 +315,20 @@ public class MainController {
 		
 		try {
 			new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine();
-		} catch (IOException e) {
-			System.out.println(e.getClass().getName());
-			e.printStackTrace();
+		} catch (IOException e1) {
+			System.out.println(e1.getClass().getName());
+			e1.printStackTrace();
 		}
 		
 		manager.start();
 		
-		Settings settings = new Settings();
-		settings.addServer(manager.getUsername(), usernameField.getText(), passwordField.getText(), IPField.getText(), Integer.toString(this.port));
-	
 		usernameField.clear();
 		passwordField.clear();
 		IPField.clear();
+
+		thisConnection.setText(manager.getConnectionName());
+		connectionAddingException = false;
+		inputField.setEditable(true);
 	}
 
 	public void registerFromInput()
@@ -380,8 +396,8 @@ public class MainController {
 			manager.start();
 			
 			Settings settings = new Settings();
-			settings.addServer(manager.getUsername(), usernameField.getText(), passwordField.getText(), IPField.getText(), Integer.toString(this.port));
-	
+			settings.addServer(manager.getConnectionName(), manager.getUsername(), passwordField.getText(), IPField.getText(), Integer.toString(this.port));
+			
 			usernameField.clear();
 			passwordField.clear();
 			IPField.clear();
