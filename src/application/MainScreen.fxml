@@ -11,9 +11,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.191" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MainController">
+<AnchorPane minHeight="720.0" minWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controller.MainController">
    <children>
-      <JFXListView fx:id="JFXListView" layoutY="462.0" minHeight="100.0" minWidth="197.0" prefHeight="252.0" prefWidth="200.0" />
       <AnchorPane id="BackgroundImageLayer" layoutX="7.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <effect>
             <ColorAdjust brightness="-0.14" />
@@ -70,5 +69,6 @@
             </ScrollPane>
          </children>
       </AnchorPane>
+      <JFXListView fx:id="JFXListView" editable="true" layoutY="462.0" minHeight="252.0" minWidth="200.0" prefHeight="252.0" style="-fx-background-color: rgba(255, 255, 255, .8);" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" />
    </children>
 </AnchorPane>

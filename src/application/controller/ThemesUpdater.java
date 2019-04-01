@@ -3,10 +3,11 @@ package application.controller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import com.jfoenix.controls.JFXListView;
 
 import application.filemanager.PathFinder;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ThemesUpdater {
 	private MainController controller;
@@ -18,12 +19,10 @@ public class ThemesUpdater {
 	
 	public void updateInternalList()
 	{
-		JFXListView<?> list = controller.getThemesList();
+		JFXListView<String> list = controller.getThemesList();
 		ArrayList<String> themes = new ArrayList<String>(Arrays.asList(new File(PathFinder.getResourcePath("\\themes")).list()));
-		for(int i = 0; i < themes.size(); i++)
-		{
-			
-		}
+		ObservableList<String> observable = FXCollections.observableArrayList(themes);
+		list.setItems(observable);
 	}
 	
 	

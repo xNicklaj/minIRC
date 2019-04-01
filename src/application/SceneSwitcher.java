@@ -59,6 +59,7 @@ public class SceneSwitcher {
 		controller.evaluateStoredServer();
 		
 		updater.setController(controller);
+		updater.updateInternalList();
 		
 		System.out.println(PathFinder.getResourcePath("themes\\mountain\\scene.css"));
 		mainScene = new Scene(root, 1280, 720);

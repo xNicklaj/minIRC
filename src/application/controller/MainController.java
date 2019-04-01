@@ -15,6 +15,7 @@ import application.Server;
 import application.filemanager.Settings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -64,7 +65,7 @@ public class MainController {
 	private VBox serverList;
 	
 	@FXML
-    private JFXListView<?> JFXListView;
+    private JFXListView<String> JFXListView;
 	
 	@FXML
     private void login(ActionEvent event) {
@@ -78,7 +79,7 @@ public class MainController {
     		this.registerFromInput();
     }
     
-    public JFXListView<?> getThemesList()
+    public JFXListView<String> getThemesList()
     {
     	return this.JFXListView;
     }

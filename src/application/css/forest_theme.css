@@ -60,6 +60,10 @@
   -fx-background-color: transparent;
 }
 
+.jfx-list-view{
+	-jfx-focus-color: rgba(56, 175, 60, .75);
+}
+
 .scroll-pane{
 	-fx-background-color: transparent;
 }
