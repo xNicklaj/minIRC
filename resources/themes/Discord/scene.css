@@ -64,6 +64,10 @@
 	-fx-background-color: rgba(35, 39, 42, .8);
 }
 
+.jfx-list-cell .jfx-rippler{
+	-jfx-rippler-fill: rgba(114, 137, 218, 1);
+}
+
 #BackgroundImageLayer{
 	-fx-background-color: rgba(44, 47, 51, .9);
 	-fx-background-size: 100% 100%;
