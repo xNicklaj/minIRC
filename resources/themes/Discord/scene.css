@@ -1,0 +1,87 @@
+ @font-face{
+ 	src: url("../../../resources/shared/fonts/Roboto-Medium.ttf");
+ }
+
+.addconnection-pane{
+	-fx-font-family: "Roboto Medium";
+}
+
+.message-pane{
+	-fx-font-family: "Roboto Medium";	
+}
+
+.connection-pane{
+	-fx-font-family: "Roboto Medium";	
+}
+
+.text{
+	-fx-fill: rgba(255, 255, 255, 1);
+	-fx-text-fill: rgba(255, 255, 255, 1);
+}
+
+.icon{
+	-fx-fill: rgba(255, 255, 255, 1);
+}
+
+.message-background{
+	-fx-background-color: rgba(0, 0, 0, 0);
+	-fx-background-radius: 5;
+	-fx-border-radius: 5, 5, 5, 5;
+}
+
+.message-background .text{
+	-fx-fill: rgba(255, 255, 255, 1);
+}
+
+.server-list-background{
+	-fx-background-color: rgba(35, 39, 42, .8);
+}
+
+.list-view{
+	-fx-background-color: rgba(96, 125, 139, 0);
+}
+
+.scroll-pane > .viewport{
+	-fx-background-color: transparent;
+}
+
+.scroll-pane{
+	-fx-background-color: transparent;
+}
+
+.jfx-button{
+	-fx-background-color: rgba(114, 137, 218, 1);
+	-jfx-button-type: RAISED;
+}
+
+.jfx-text-field{
+	-jfx-focus-color: rgba(114, 137, 218 1);
+	-fx-prompt-text-fill: rgba(255, 255, 255, 1);
+	-fx-text-fill: rgba(255, 255, 255, 1);
+}
+
+.jfx-list-cell{
+	-fx-background-color: rgba(35, 39, 42, .8);
+}
+
+#BackgroundImageLayer{
+	-fx-background-color: rgba(44, 47, 51, .9);
+	-fx-background-size: 100% 100%;
+}
+
+#MainPane{
+	-fx-background-color: rgba(44, 47, 51, .9);
+	-fx-fill: rgba(255, 255, 255, 1);
+}
+
+#MainPane .text{
+	-fx-fill: rgba(255, 255, 255, 1);
+	-fx-text-fill: rgba(255, 255, 255, 1);
+}
+
+#AddButton{
+	-fx-background-radius: 30;
+	-fx-background-color: rgba(114, 137, 218, 1);
+	-fx-fill: rgba(255, 255, 255, 1);
+	-fx-border-radius: 50, 50, 50, 50;
+}
