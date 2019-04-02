@@ -1,11 +1,14 @@
 package application;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import application.controller.MainController;
 import application.controller.ServerController;
+import application.controller.ThemesUpdater;
+import application.filemanager.PathFinder;
 import application.filemanager.Settings;
-import application.network.InboundListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,6 +19,7 @@ public class SceneSwitcher {
 	private Parent root;
 	private Stage primaryStage;
 	private Scene mainScene;
+	private ThemesUpdater updater;
 	private MainController controller;
 	
 	public SceneSwitcher(Stage primaryStage)
@@ -37,31 +41,44 @@ public class SceneSwitcher {
 		root = null;
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("MainScreen.fxml"));
 		Settings settings = new Settings();
+		updater = new ThemesUpdater();
 		try {
 			root = loader.load();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		root.setId("anchor");
 		controller = (MainController) loader.getController();
-		InboundListener.controller = controller;
+		
 		ServerController.controller = controller;
 		
 		controller.getInputField().setEditable(false);
 		controller.getPasswordField().setAccessibleText(" ");
 		controller.getServerScrollpane().setVbarPolicy(ScrollBarPolicy.NEVER);
 		controller.getServerScrollpane().setHbarPolicy(ScrollBarPolicy.NEVER);
+		controller.setSwitcher(this);
 		controller.evaluateStoredServer();
 		
+		updater.setController(controller);
+		updater.updateInternalList();
+		updater.run();
+		
 		mainScene = new Scene(root, 1280, 720);
-		if(settings.getThemeName().equals("mountain"))
-			mainScene.getStylesheets().add(getClass().getResource("css/mountain_theme.css").toExternalForm());
-		else if(settings.getThemeName().equals("forest"))
-			mainScene.getStylesheets().add(getClass().getResource("css/forest_theme.css").toExternalForm());
+		try {
+			this.setStyle(new URL("file:///" + PathFinder.getResourcePath("themes\\" + settings.getThemeName() + "\\scene.css")));
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
+		//mainScene.getStylesheets().add(getClass().getResource("css/forest_theme.css").toExternalForm());
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		return 0;
+	}
+
+	public void setStyle(URL urlToStyle)
+	{
+		this.mainScene.getStylesheets().clear();
+		this.mainScene.getStylesheets().add(urlToStyle.toExternalForm());
 	}
 	
 	public MainController getController()

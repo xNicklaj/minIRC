@@ -23,17 +23,9 @@ public class XMLLoader{
 		try {
 			outputFile.output(document, new FileWriter(PathFinder.getProjectPath() + "settings.xml"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-	}
-
-	private boolean isStringChild(Element child, String childName)
-	{
-		if(child.getName().equals(childName))
-			return true;
-		
-		return false;
 	}
 
 	public void FXMLStructure()

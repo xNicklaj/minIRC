@@ -60,6 +60,15 @@
   -fx-background-color: transparent;
 }
 
+.jfx-list-view{
+	-jfx-focus-color: rgba(56, 175, 60, .75);
+}
+
+.jfx-listview .jfx-list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: rgba(56, 175, 60, .75);
+    -fx-text-fill: white;
+}
+
 .scroll-pane{
 	-fx-background-color: transparent;
 }

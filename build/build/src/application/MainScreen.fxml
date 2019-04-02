@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -68,5 +69,6 @@
             </ScrollPane>
          </children>
       </AnchorPane>
+      <JFXListView fx:id="JFXListView" editable="true" layoutY="462.0" minHeight="252.0" minWidth="200.0" onMouseClicked="#selectTheme" prefHeight="252.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" />
    </children>
 </AnchorPane>

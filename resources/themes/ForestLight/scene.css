@@ -1,5 +1,5 @@
  @font-face{
- 	src: url("../../../resources/shared/fonts/Roboto-Medium.ttf");
+ 	src: url("../../shared/fonts/Roboto-Medium.ttf");
  }
 
 .addconnection-pane{
@@ -15,11 +15,11 @@
 }
 
 .icon{
-	-fx-fill: rgba(56, 175, 60, 1);
+	-fx-fill: rgba(255, 255, 255, 1);
 }
 
 .message-background{
-	-fx-background-color: rgba(121, 85, 72, .75);
+	-fx-background-color: rgba(56, 175, 60, .75);
 	-fx-background-radius: 5;
 	-fx-border-radius: 5, 5, 5, 5;
 }
@@ -36,21 +36,45 @@
 	-fx-background-color: transparent;
 }
 
+.scroll-pane .scroll-bar .increment-button {
+  visibility: hidden;
+}
+
+.scroll-pane .scroll-bar .decrement-button {
+  visibility: hidden;
+}
+
+.scroll-pane .scroll-bar:vertical {
+  -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .track-background {
+  visibility: hidden;
+}
+
+.scroll-pane .scroll-bar:vertical .track {
+  visibility: hidden;
+}
+
+.scroll-pane .hide-thumb .scroll-bar:vertical .thumb {
+  -fx-background-color: transparent;
+}
+
 .scroll-pane{
 	-fx-background-color: transparent;
 }
 
 .jfx-button{
-	-fx-background-color: rgba(121, 85, 72, 1);
+	-fx-background-color: rgba(56, 142, 60, 1);
 	-jfx-button-type: RAISED;
 }
 
 .jfx-text-field{
-	-jfx-focus-color: rgba(121, 85, 72, 1);
+	-jfx-focus-color: rgba(56, 142, 60, 1);
 }
 
 #BackgroundImageLayer{
-	-fx-background-image: url(@../../../../../resources/themes/mountain/Background.jpg);
+	-fx-background-image: url(Background.jpg);
 	-fx-background-size: 100% 100%;
 }
 
@@ -61,6 +85,6 @@
 #AddButton{
 	-fx-background-radius: 30;
 	-fx-background-color: rgba(255, 255, 255, 1);
-	-fx-text-fill: rgba(121, 85, 72, 1);
+	-fx-text-fill: rgba(56, 142, 60, 1);
 	-fx-border-radius: 50, 50, 50, 50;
 }

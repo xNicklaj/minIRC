@@ -10,6 +10,7 @@ import java.net.UnknownHostException;
 import application.controller.Buffer;
 import application.controller.ConnectedServerUpdater;
 import application.controller.MainController;
+import application.controller.ServerController;
 import javafx.application.Platform;
 
 public class NetworkManager extends Thread{
@@ -115,6 +116,15 @@ public class NetworkManager extends Thread{
 	public void disconnect()
 	{
 		this.run = false;
+		try {
+			this.socket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.controller.getInputField().setText("");
+		this.controller.getInputField().setEditable(false);
+		Platform.runLater(new ConnectedServerUpdater("Non connesso", controller));
+		new ConnectedServerUpdater("non connesso", ServerController.controller).run();
 	}
 
 	@Override
@@ -128,26 +138,27 @@ public class NetworkManager extends Thread{
 			while(run)
 			{
 				username = reader.readLine();
+				if(!run) continue;
 				message = reader.readLine();
+				if(!run) continue;
 				if(username.equals("admin") && message.substring(0, 3).equals("0xc"))
 				{
 					switch(message)
 					{
-					case "0xc01":
+					case "0xc0001":
 						this.disconnect();
-						this.controller.getInputField().setEditable(false);
-						Platform.runLater(new ConnectedServerUpdater("Non connesso", controller));
 						break;
 					}
 				}
-				Platform.runLater(new Buffer(username, message, controller));
+				else
+					Platform.runLater(new Buffer(username, message, controller));
 			}
-			if(reader != null)
-				reader.close();
-			if(writer != null)
-				writer.close();
+			socket.close();
+			socket = null;
 		} catch (IOException e) {
-			System.exit(-1);
+			this.controller.getInputField().setEditable(false);
+			Platform.runLater(new ConnectedServerUpdater("Non connesso", controller));
+			new ConnectedServerUpdater("non connesso", ServerController.controller).run();
 		}
 	}
 }

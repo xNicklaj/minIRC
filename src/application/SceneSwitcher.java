@@ -56,31 +56,29 @@ public class SceneSwitcher {
 		controller.getPasswordField().setAccessibleText(" ");
 		controller.getServerScrollpane().setVbarPolicy(ScrollBarPolicy.NEVER);
 		controller.getServerScrollpane().setHbarPolicy(ScrollBarPolicy.NEVER);
+		controller.setSwitcher(this);
 		controller.evaluateStoredServer();
 		
 		updater.setController(controller);
 		updater.updateInternalList();
+		updater.run();
 		
-		System.out.println(PathFinder.getResourcePath("themes\\mountain\\scene.css"));
 		mainScene = new Scene(root, 1280, 720);
-		if(settings.getThemeName().equals("mountain"))
-			try {
-				mainScene.getStylesheets().add(new URL("file:///" + PathFinder.getResourcePath("themes\\mountain\\scene.css")).toExternalForm());
-			} catch (MalformedURLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		else if(settings.getThemeName().equals("forest"))
-			try {
-				mainScene.getStylesheets().add(new URL("file:///" + PathFinder.getResourcePath("themes\\forest\\scene.css")).toExternalForm());
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		try {
+			this.setStyle(new URL("file:///" + PathFinder.getResourcePath("themes\\" + settings.getThemeName() + "\\scene.css")));
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+		}
 		//mainScene.getStylesheets().add(getClass().getResource("css/forest_theme.css").toExternalForm());
 		primaryStage.setScene(mainScene);
 		primaryStage.show();
 		return 0;
+	}
+
+	public void setStyle(URL urlToStyle)
+	{
+		this.mainScene.getStylesheets().clear();
+		this.mainScene.getStylesheets().add(urlToStyle.toExternalForm());
 	}
 	
 	public MainController getController()

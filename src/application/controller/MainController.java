@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -11,14 +13,16 @@ import com.jfoenix.controls.JFXListView;
 
 import application.network.NetworkManager;
 import application.Message;
+import application.SceneSwitcher;
 import application.Server;
+import application.filemanager.PathFinder;
 import application.filemanager.Settings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -27,6 +31,8 @@ public class MainController {
 	public static Object connectionMutex = new Object();
 
 	public boolean resetAll;
+
+	private SceneSwitcher switcher;
 
 	@FXML
 	private JFXTextField usernameField;
@@ -63,27 +69,26 @@ public class MainController {
 
 	@FXML
 	private VBox serverList;
-	
-	@FXML
-    private JFXListView<String> JFXListView;
-	
-	@FXML
-    private void login(ActionEvent event) {
-		if(event.getSource() == loginButton)
-			this.loginFromInput();
-    }
 
-    @FXML
-    private void register(ActionEvent event) {
-    	if(event.getSource() == registerButton)
-    		this.registerFromInput();
-    }
-    
-    public JFXListView<String> getThemesList()
-    {
-    	return this.JFXListView;
-    }
-	
+	@FXML
+	private JFXListView<String> JFXListView;
+
+	@FXML
+	private void login(ActionEvent event) {
+		if (event.getSource() == loginButton)
+			this.loginFromInput();
+	}
+
+	@FXML
+	private void register(ActionEvent event) {
+		if (event.getSource() == registerButton)
+			this.registerFromInput();
+	}
+
+	public JFXListView<String> getThemesList() {
+		return this.JFXListView;
+	}
+
 	private int port;
 
 	private Server currentServer = null;
@@ -100,76 +105,83 @@ public class MainController {
 		this.currentServer = currentServer;
 	}
 
-	private boolean validateIPAddress(String ipAddress) { 
+	private boolean validateIPAddress(String ipAddress) {
 		String[] tokens = ipAddress.split("\\.");
-		try
-		{
-			if(tokens[tokens.length - 1].contains(":"))
-			{
+		try {
+			if (tokens[tokens.length - 1].contains(":")) {
 				this.port = Integer.parseInt(tokens[tokens.length - 1].substring(tokens[tokens.length - 1].indexOf(":") + 1));
 				tokens[tokens.length - 1] = tokens[tokens.length - 1].substring(0, tokens[tokens.length - 1].lastIndexOf(":"));
-			}
-			else
+			} else
 				port = 2332;
-		}catch(NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			IPField.setStyle("-jfx-unfocus-color: rgba(244, 67, 54, 1);");
 			connectionAddingException = true;
 			return false;
 		}
-		
-		
-		if (tokens.length != 4) { 
+
+		if (tokens.length != 4) {
 			return false;
-		} 
+		}
 		for (String str : tokens) {
 			int i = Integer.parseInt(str);
 			if ((i < 0) || (i > 255))
-				return false; 
-		} 
-		return true;	
+				return false;
+		}
+		return true;
 	}
 
 	@FXML
 	private void addConnection(ActionEvent event) {
-		//this.addInternalConnection();
+		// this.addInternalConnection();
 	}
 
 	@FXML
 	private void checkIfEmpty(KeyEvent event) {
-		if(connectionAddingException)
-		{
-			if(event.getSource() == usernameField) {
-				if(!usernameField.getText().trim().isEmpty())
+		if (connectionAddingException) {
+			if (event.getSource() == usernameField) {
+				if (!usernameField.getText().trim().isEmpty())
 					usernameField.setStyle("-jfx-unfocus-color: #000000;");
-			}
-			else if(event.getSource() == IPField) {
-				if(!IPField.getText().trim().isEmpty())
+			} else if (event.getSource() == IPField) {
+				if (!IPField.getText().trim().isEmpty())
 					IPField.setStyle("-jfx-unfocus-color: #000000;");
-			}
-			else if(event.getSource() == passwordField) {
-				if(!passwordField.getText().trim().isEmpty())
+			} else if (event.getSource() == passwordField) {
+				if (!passwordField.getText().trim().isEmpty())
 					passwordField.setStyle("-jfx-unfocus-color: #000000;");
 			}
 		}
-		if(event.getCode() == KeyCode.ENTER);
-			//addInternalConnection();
+		if (event.getCode() == KeyCode.ENTER)
+			;
+		// addInternalConnection();
 	}
 
 	@FXML
 	private void sendFromReturn(KeyEvent event) {
-		if(event.getCode() == KeyCode.ENTER && !inputField.getText().trim().isEmpty())
-		{
+		if (event.getCode() == KeyCode.ENTER && !inputField.getText().trim().isEmpty()) {
 			this.sendMessage();
 		}
 	}
 
 	@FXML
 	private void sendMessage(ActionEvent event) {
-		if(inputField.getText().trim().isEmpty())
+		if (inputField.getText().trim().isEmpty())
 			return;
-	
+
 		this.sendMessage();
+	}
+
+	@FXML
+	void selectTheme(MouseEvent event) {
+		try {
+			this.switcher.setStyle(new URL("file:///" + PathFinder.getResourcePath("themes\\" + JFXListView.getSelectionModel().getSelectedItem() + "\\scene.css")));
+			new Settings().setThemeName(JFXListView.getSelectionModel().getSelectedItem());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setSwitcher(SceneSwitcher switcher)
+	{
+		this.switcher = switcher;
 	}
 
 	private void sendMessage()
@@ -196,6 +208,7 @@ public class MainController {
 	{
 		this.thisConnection.setText(servername);
 	}
+	
 	
 	public void loginFromInput()
 	{

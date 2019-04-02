@@ -43,7 +43,7 @@ public class ServerController {
     	else
     	{
     		this.connectIcon.setGlyphName("LAN_CONNECT");
-    		//controller.updateConnectionBar(false);
+    		controller.getNetworkManager().disconnect();
     		isConnected = false;
     	}
     }

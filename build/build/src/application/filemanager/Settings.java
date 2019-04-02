@@ -24,7 +24,7 @@ public class Settings implements XMLLoadable{
 		Element parent = this.getSettings().getNodePointer(new String[] {"content", "serverlist"});
 		
 		parent.removeContent(parent.getChildren().get(i));
-		this.getSettings().updateXML();
+		this.settings.updateXML();
 	}
 	
 	public void createSettings()
@@ -102,6 +102,15 @@ public class Settings implements XMLLoadable{
 				return this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getText();
 		
 		return null;
+	}
+
+	public void setThemeName(String name)
+	{
+		for(int i = 0; i <  this.settings.getNodesNumber(new String[]{"content", "settings"}); i++)
+			if(this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getName().equals("theme"))
+				this.settings.getNodesList(new String[]{"content", "settings"}).get(i).setText(name);
+
+		this.settings.updateXML();
 	}
 	
 	public List<Element> getServerList()
