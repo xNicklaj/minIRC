@@ -29,9 +29,10 @@
 	-fx-border-radius: 5, 5, 5, 5;
 }
 
-.message-background .text{
+.message-background .messageField > Text{
 	-fx-fill: rgba(255, 255, 255, 1);
 }
+
 
 .server-list-background{
 	-fx-background-color: rgba(35, 39, 42, .8);

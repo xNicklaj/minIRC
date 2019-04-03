@@ -16,7 +16,6 @@ public class PathFinder {
 	
 	public static String getJarResourcePath(String resource)
 	{
-		System.out.println("" + Main.class.getResource("/resources/" + resource));
 		return "" + Main.class.getResource("/resources/" + resource);
 	}
 	

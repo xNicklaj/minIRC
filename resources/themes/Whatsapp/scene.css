@@ -1,0 +1,86 @@
+ @font-face{
+ 	src: url("../../../resources/shared/fonts/Roboto-Medium.ttf");
+ }
+
+.addconnection-pane{
+	-fx-font-family: "Roboto Medium";
+}
+
+.message-pane{
+	-fx-font-family: "Roboto Medium";	
+}
+
+.connection-pane{
+	-fx-font-family: "Roboto Medium";	
+}
+
+.icon{
+	-fx-fill: rgba(255, 255, 255, 1);
+}
+
+.message-background{
+	-fx-background-color: rgba(37, 211, 102, .75);
+	-fx-background-radius: 5;
+	-fx-border-radius: 5, 5, 5, 5;
+}
+
+
+.jfx-list-cell{
+	-fx-background-color: rgba(18, 140, 126, .8);
+	-fx-fill: rgba(0, 0, 0, 1); 
+	-fx-text-fill: rgba(0, 0, 0, 1); 
+}
+
+.jfx-list-cell .text{
+	-fx-fill: rgba(0, 0, 0, 1);
+}
+
+.jfx-list-cell .jfx-rippler{
+	-jfx-rippler-fill: rgba(0, 0, 0, 1);
+}
+
+.server-list-background{
+	-fx-background-color: rgba(7, 94, 84, .8);
+}
+
+.server-list-background .text{
+	-fx-fill: rgba(255, 255, 255, 1);
+}
+
+.list-view{
+	-fx-background-color: rgba(255, 255, 255, 0);
+}
+
+.scroll-pane > .viewport{
+	-fx-background-color: transparent;
+}
+
+.scroll-pane{
+	-fx-background-color: transparent;
+}
+
+.jfx-button{
+	-fx-background-color: rgba(7, 94, 84, 1);
+	-jfx-button-type: RAISED;
+	-fx-text-fill: rgba(255, 255, 255, 1);
+}
+
+.jfx-text-field{
+	-jfx-focus-color: rgba(18, 140, 126, 1);
+}
+
+#BackgroundImageLayer{
+	-fx-background-image: url(Background.png);
+	-fx-background-size: 100% 100%;
+}
+
+#MainPane{
+	-fx-background-color: rgba(255, 255, 255, .9);
+}
+
+#AddButton{
+	-fx-background-radius: 30;
+	-fx-background-color: rgba(7, 94, 84, 1);
+	-fx-text-fill: rgba(255, 255, 255, 1);
+	-fx-border-radius: 50, 50, 50, 50;
+}
