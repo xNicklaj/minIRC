@@ -1,14 +1,8 @@
 package application.controller;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import com.jfoenix.controls.JFXListView;
-
 import application.filemanager.PathFinder;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class ThemesUpdater extends Thread{
 	private MainController controller;

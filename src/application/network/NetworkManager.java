@@ -11,6 +11,8 @@ import application.controller.Buffer;
 import application.controller.ConnectedServerUpdater;
 import application.controller.MainController;
 import application.controller.ServerController;
+import application.filemanager.PathFinder;
+import application.filemanager.Settings;
 import javafx.application.Platform;
 
 public class NetworkManager extends Thread{
@@ -91,14 +93,20 @@ public class NetworkManager extends Thread{
 	{
 		try {
 			socket = new Socket(this.getIp(), this.getPort());
+			if(new Settings().getLogginglevel() >= 1)
+				PathFinder.pushToLogs("Connected to " + this.getIp());
 			writer = new PrintWriter(socket.getOutputStream(), true);
 			reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		} catch (UnknownHostException e) {
 			controller.setReset(true);
 			this.run = false;
+			if(new Settings().getLogginglevel() >= 1)
+				PathFinder.pushToLogs("Error attempting to connect to " + this.getIp());
 		} catch (IOException e) {
 			controller.setReset(true);
 			this.run = false;
+			if(new Settings().getLogginglevel() >= 1)
+				PathFinder.pushToLogs("Error attempting to connect to " + this.getIp());
 		}
 	}
 	
@@ -146,16 +154,24 @@ public class NetworkManager extends Thread{
 					switch(message)
 					{
 					case "0xc0001":
+						if(new Settings().getLogginglevel() >= 1)
+							PathFinder.pushToLogs("Connection forcibly closed by remote host");
 						this.disconnect();
 						break;
 					}
 				}
 				else
+				{
 					Platform.runLater(new Buffer(username, message, controller));
+					if(new Settings().getLogginglevel() >= 2)
+						PathFinder.pushToLogs(username + ": " + message);
+				}
 			}
 			socket.close();
 			socket = null;
 		} catch (IOException e) {
+			if(new Settings().getLogginglevel() >= 1)
+				PathFinder.pushToLogs("Disconnected from " + this.getIp());
 			this.controller.getInputField().setEditable(false);
 			Platform.runLater(new ConnectedServerUpdater("Non connesso", controller));
 			new ConnectedServerUpdater("non connesso", ServerController.controller).run();

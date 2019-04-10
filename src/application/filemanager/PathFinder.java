@@ -1,13 +1,28 @@
 package application.filemanager;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import application.Main;
 
 public class PathFinder {
 	private static Path projectPath = Paths.get(new File("").getAbsolutePath());
+	private static PrintWriter printer;
+	
+	public PathFinder()
+	{
+		try {
+			printer = new PrintWriter(new FileWriter(new File("log.txt")));
+		} catch (IOException e) {
+
+		}
+	}
 	
 	public static String getProjectPath()
 	{
@@ -27,6 +42,12 @@ public class PathFinder {
 	public static String getThemePath(String theme)
 	{
 		return getProjectPath() + "themes\\" + theme + "\\";
+	}
+	
+	public synchronized static void pushToLogs(String text)
+	{
+		printer.println("[" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()) + "] " + text);
+		printer.flush();
 	}
 	
 }
