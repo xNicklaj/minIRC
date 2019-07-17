@@ -1,22 +1,25 @@
 package application.controller;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import com.jfoenix.controls.JFXListView;
-
 import application.filemanager.PathFinder;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 
 public class ThemesUpdater extends Thread{
 	private MainController controller;
 	private boolean run;
-	private boolean behaviour = false;
+	private boolean behaviour;
+	private ThemeUpdaterRunnable runnable;
+	
+	public ThemesUpdater()
+	{
+		this.setName("themes-updater");
+		this.run = true;
+	}
 
 	public void setController(MainController controller)
 	{
 		this.controller = controller;
+		this.runnable = new ThemeUpdaterRunnable(controller);
 	}
 	
 	public void validateBehaviour()
@@ -25,60 +28,24 @@ public class ThemesUpdater extends Thread{
 			this.behaviour = true;
 	}
 
-	public void updateInternalList()
-	{
-		this.validateBehaviour();
-		JFXListView<String> list = controller.getThemesList();
-		ArrayList<String> temp = null;
-		if(behaviour)
-		{ 
-			temp = new ArrayList<String>(Arrays.asList(new File(PathFinder.getResourcePath("themes")).list()));
-			for(int i = 0; i < temp.size(); i++)
-			{
-				if(!new File(PathFinder.getResourcePath("themes") + "\\" +  temp.get(i) + "\\scene.css").exists())
-				{
-					temp.remove(i);
-					i--;
-				}
-			}
-		}
-		else
-		{
-			System.out.println(Arrays.asList((new File(PathFinder.getJarResourcePath("themes")).listFiles())));
-			temp = new ArrayList<String>(Arrays.asList(new File(PathFinder.getJarResourcePath("themes")).list()));
-			for(int i = 0; i < temp.size(); i++)
-			{
-				if(!new File(PathFinder.getJarResourcePath("themes") + "/" +  temp.get(i) + "/scene.css").exists())
-				{
-					temp.remove(i);
-					i--;
-				}
-			}
-		}
-
-		ArrayList<String> themes = temp;
-		ObservableList<String> observable = FXCollections.observableArrayList(themes);
-		list.setItems(observable);
-	}
-
 	public void run()
 	{
 		while(run)
 		{
-			this.updateInternalList();
+			Platform.runLater(runnable);
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				System.out.println(e.getClass().getName());
-				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void startUpdater()
+	{
 	}
 
 	public void toggleRun()
 	{
 		this.run = !run;
 	}
-
-
 }

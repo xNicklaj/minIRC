@@ -124,6 +124,15 @@ public class Settings implements XMLLoadable{
 		return list;
 	}
 	
+	public int getLogginglevel()
+	{
+		for(int i = 0; i <  this.settings.getNodesNumber(new String[]{"content", "settings"}); i++)
+			if(this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getName().equals("logginglevel"))
+				return Integer.parseInt(this.settings.getNodesList(new String[]{"content", "settings"}).get(i).getText());
+		
+		return 2;
+	}
+	
 	public void XMLStructure()
 	{
 		Element content = new Element("content");
@@ -133,7 +142,10 @@ public class Settings implements XMLLoadable{
 		Element settings = new Element("settings");
 		
 		settings.addContent(new Element("theme"));
-		settings.getChild("theme").setText("forest");
+		settings.getChild("theme").setText("ForestLight");
+		
+		settings.addContent(new Element("logginglevel"));
+		settings.getChild("logginglevel").setText("1");
 		
 		this.settings.getDocument().getRootElement().addContent(serverlist);
 		this.settings.getDocument().getRootElement().addContent(settings);

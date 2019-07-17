@@ -18,8 +18,6 @@ public class Main extends Application{
 	              System.exit(0);
 	          }
 	    });
-		PathFinder pf = new PathFinder();
-		pf = null;
 		
 		Settings settings = new Settings();
 		settings.createSettings();

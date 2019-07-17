@@ -246,6 +246,8 @@ public class MainController {
 				return;
 			manager.setController(this);
 			manager.rebindServer();
+			if(resetAll)
+				return;
 			try {
 				manager.setConnectionName(new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine());
 			} catch (IOException e1) {
@@ -318,6 +320,8 @@ public class MainController {
 			return;
 		manager.setController(this);
 		manager.rebindServer();
+		if(resetAll)
+			return;
 		try {
 			manager.setConnectionName(new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine());
 		} catch (IOException e1) {
@@ -391,6 +395,8 @@ public class MainController {
 				return;
 			manager.setController(this);
 			manager.rebindServer();
+			if(resetAll)
+				return;
 			try {
 				manager.setConnectionName(new BufferedReader(new InputStreamReader(manager.getSocket().getInputStream())).readLine());
 			} catch (IOException e1) {

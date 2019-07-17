@@ -46,6 +46,14 @@ public class PathFinder {
 	
 	public synchronized static void pushToLogs(String text)
 	{
+		if(printer == null)
+			try {
+				printer = new PrintWriter(new FileWriter(new File("log.txt")));
+			} catch (IOException e) {
+				System.out.println(e.getClass().getName());
+				e.printStackTrace();
+			}
+		
 		printer.println("[" + new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime()) + "] " + text);
 		printer.flush();
 	}

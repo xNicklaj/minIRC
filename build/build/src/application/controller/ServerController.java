@@ -37,6 +37,8 @@ public class ServerController {
     	if(!isConnected)
     	{
     		controller.loginFromRecord(username.getText(), this.password, IP.getText(), port.getText());
+    		if(controller.getNetworkManager().getSocket() == null)
+    			return;
     		this.connectIcon.setGlyphName("LAN_DISCONNECT");
     		isConnected = true;
     	}

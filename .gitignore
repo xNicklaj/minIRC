@@ -2,3 +2,6 @@
 /settings.xml
 /minIRC.iml
 /minIRC.eml
+/build/build/*
+/build/project/*
+log.txt

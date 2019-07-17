@@ -60,14 +60,18 @@ public class SceneSwitcher {
 		controller.evaluateStoredServer();
 		
 		updater.setController(controller);
-		updater.updateInternalList();
-		updater.run();
+		updater.start();
 		
 		mainScene = new Scene(root, 1280, 720);
 		try {
 			this.setStyle(new URL("file:///" + PathFinder.getResourcePath("themes\\" + settings.getThemeName() + "\\scene.css")));
 		} catch (MalformedURLException e1) {
-			e1.printStackTrace();
+			try {
+				this.setStyle(new URL("file:///" + PathFinder.getResourcePath("themes\\ForestLight\\scene.css")));
+			} catch (MalformedURLException e) {
+				System.out.println(e.getClass().getName());
+				e.printStackTrace();
+			}
 		}
 		//mainScene.getStylesheets().add(getClass().getResource("css/forest_theme.css").toExternalForm());
 		primaryStage.setScene(mainScene);

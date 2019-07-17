@@ -18,7 +18,7 @@
             <ColorAdjust brightness="-0.14" />
          </effect>
       </AnchorPane>
-      <AnchorPane id="MainPane" layoutX="562.0" prefHeight="57.0" prefWidth="644.0" styleClass="addconnection-pane" AnchorPane.topAnchor="12.0">
+      <AnchorPane id="MainPane" layoutX="562.0" prefHeight="57.0" prefWidth="644.0" styleClass="addconnection-pane" AnchorPane.leftAnchor="564.0" AnchorPane.topAnchor="12.0">
          <effect>
             <DropShadow blurType="GAUSSIAN" color="#000000ad" offsetX="-6.0" offsetY="6.0" />
          </effect>
@@ -35,12 +35,12 @@
             <DropShadow blurType="GAUSSIAN" color="#000000ad" offsetX="-6.0" offsetY="6.0" />
          </effect>
          <children>
-            <Text layoutX="14.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connessione attuale:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="15.0">
+            <Text layoutX="14.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="Connessione attuale:" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="15.0">
                <font>
                   <Font size="16.0" />
                </font>
             </Text>
-            <Text fx:id="thisConnection" layoutX="168.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="non connesso" wrappingWidth="269.0" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="15.0">
+            <Text fx:id="thisConnection" layoutX="168.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="non connesso" wrappingWidth="269.0" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="15.0">
                <font>
                   <Font size="16.0" />
                </font>
@@ -69,6 +69,6 @@
             </ScrollPane>
          </children>
       </AnchorPane>
-      <JFXListView fx:id="JFXListView" editable="true" layoutY="462.0" minHeight="252.0" minWidth="200.0" onMouseClicked="#selectTheme" prefHeight="252.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" />
+      <JFXListView fx:id="JFXListView" editable="true" layoutY="462.0" minHeight="252.0" minWidth="200.0" onMouseClicked="#selectTheme" prefHeight="252.0" styleClass="server-list-background" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" />
    </children>
 </AnchorPane>
